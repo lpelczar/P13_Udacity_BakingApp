@@ -19,31 +19,28 @@ import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity implements RecipeFragment.OnListFragmentInteractionListener {
 
+    List<Recipe> recipes = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final List<Recipe> recipes = new ArrayList<>();
+        getRecipesFromApi();
+    }
 
+    private void getRecipesFromApi() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/")
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-
         RecipeAPIService service = restAdapter.create(RecipeAPIService.class);
 
         service.getRecipes(new Callback<List<Recipe>>() {
             @Override
             public void success(List<Recipe> recipeResult, Response response) {
                 recipes.addAll(recipeResult);
-                RecipeFragment recipeFragment = RecipeFragment.newInstance(1);
-                recipeFragment.setRecipes(recipes);
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .add(R.id.fragment, recipeFragment)
-                        .commit();
+                startRecipesFragment();
             }
 
             @Override
@@ -51,7 +48,16 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
                 error.printStackTrace();
             }
         });
+    }
 
+    private void startRecipesFragment() {
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(1);
+        recipeFragment.setRecipes(recipes);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.fragment, recipeFragment)
+                .commit();
     }
 
     @Override
