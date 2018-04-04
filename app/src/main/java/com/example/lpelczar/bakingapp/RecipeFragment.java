@@ -15,28 +15,17 @@ import com.example.lpelczar.bakingapp.models.Recipe;
 
 import java.util.List;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnRecipeFragmentInteractionListener}
- * interface.
- */
 public class RecipeFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int columnCount = 1;
     private OnRecipeFragmentInteractionListener listener;
-
     private List<Recipe> recipes;
 
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
     }
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public RecipeFragment() {
     }
 
@@ -63,7 +52,6 @@ public class RecipeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -76,7 +64,6 @@ public class RecipeFragment extends Fragment {
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -95,16 +82,6 @@ public class RecipeFragment extends Fragment {
         listener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnRecipeFragmentInteractionListener {
         void onRecipeItemInteraction(Recipe recipe);
     }

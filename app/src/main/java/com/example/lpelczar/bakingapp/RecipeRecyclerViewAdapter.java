@@ -12,10 +12,6 @@ import com.example.lpelczar.bakingapp.models.Recipe;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link Recipe} and makes a call to the
- * specified {@link OnRecipeFragmentInteractionListener}.
- */
 public class RecipeRecyclerViewAdapter extends
         RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
 
@@ -45,8 +41,6 @@ public class RecipeRecyclerViewAdapter extends
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     listener.onRecipeItemInteraction(holder.recipe);
                 }
             }

@@ -98,7 +98,6 @@ public class HeterogeneousRecyclerViewAdapter extends
         });
     }
 
-
     @Override
     public int getItemCount() {
         return recipeDetails.size();
