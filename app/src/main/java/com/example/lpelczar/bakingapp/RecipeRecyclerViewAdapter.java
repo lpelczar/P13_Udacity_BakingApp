@@ -21,8 +21,8 @@ public class RecipeRecyclerViewAdapter extends
     private final List<Recipe> recipes;
     private final OnListFragmentInteractionListener listener;
 
-    public RecipeRecyclerViewAdapter(List<Recipe> recipes,
-                                     OnListFragmentInteractionListener listener) {
+    RecipeRecyclerViewAdapter(List<Recipe> recipes,
+                              OnListFragmentInteractionListener listener) {
         this.recipes = recipes;
         this.listener = listener;
     }
@@ -61,7 +61,7 @@ public class RecipeRecyclerViewAdapter extends
         public final TextView name;
         public Recipe recipe;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             this.view = view;
             name = view.findViewById(R.id.recipe_name_tv);
