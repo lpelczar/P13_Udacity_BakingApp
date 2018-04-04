@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.lpelczar.bakingapp.models.Recipe;
+import com.example.lpelczar.bakingapp.models.RecipeDetail;
 import com.example.lpelczar.bakingapp.services.RecipeAPIService;
 
 import java.util.ArrayList;
@@ -17,7 +18,9 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity implements RecipeFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements
+        RecipeFragment.OnRecipeFragmentInteractionListener,
+        RecipeDetailsFragment.OnRecipeDetailsFragmentInteractionListener {
 
     List<Recipe> recipes = new ArrayList<>();
 
@@ -61,7 +64,21 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
     }
 
     @Override
-    public void onListFragmentInteraction(Recipe recipe) {
-        Toast.makeText(getApplicationContext(), recipe.toString(), Toast.LENGTH_LONG).show();
+    public void onRecipeItemInteraction(Recipe recipe) {
+        RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(1);
+        List<RecipeDetail> recipeDetails = new ArrayList<>();
+        recipeDetails.addAll(recipe.getIngredients());
+        recipeDetails.addAll(recipe.getSteps());
+        recipeDetailsFragment.setRecipeDetails(recipeDetails);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment, recipeDetailsFragment)
+                .commit();
+    }
+
+    @Override
+    public void onRecipeDetailItemInteraction(RecipeDetail item) {
+        Toast.makeText(getApplicationContext(), item.toString(), Toast.LENGTH_LONG).show();
     }
 }

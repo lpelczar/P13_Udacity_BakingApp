@@ -20,7 +20,7 @@ public class RecipeDetailsFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int columnCount = 1;
-    private OnListFragmentInteractionListener listener;
+    private OnRecipeDetailsFragmentInteractionListener listener;
 
     private List<RecipeDetail> recipeDetails;
 
@@ -72,8 +72,8 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            listener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnRecipeDetailsFragmentInteractionListener) {
+            listener = (OnRecipeDetailsFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -86,7 +86,7 @@ public class RecipeDetailsFragment extends Fragment {
         listener = null;
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(RecipeDetail item);
+    public interface OnRecipeDetailsFragmentInteractionListener {
+        void onRecipeDetailItemInteraction(RecipeDetail item);
     }
 }

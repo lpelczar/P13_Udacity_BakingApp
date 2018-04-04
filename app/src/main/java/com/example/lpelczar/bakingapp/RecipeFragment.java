@@ -2,6 +2,7 @@ package com.example.lpelczar.bakingapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,14 +18,14 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnRecipeFragmentInteractionListener}
  * interface.
  */
 public class RecipeFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int columnCount = 1;
-    private OnListFragmentInteractionListener listener;
+    private OnRecipeFragmentInteractionListener listener;
 
     private List<Recipe> recipes;
 
@@ -58,7 +59,7 @@ public class RecipeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
@@ -80,8 +81,8 @@ public class RecipeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            listener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnRecipeFragmentInteractionListener) {
+            listener = (OnRecipeFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -104,7 +105,7 @@ public class RecipeFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Recipe recipe);
+    public interface OnRecipeFragmentInteractionListener {
+        void onRecipeItemInteraction(Recipe recipe);
     }
 }

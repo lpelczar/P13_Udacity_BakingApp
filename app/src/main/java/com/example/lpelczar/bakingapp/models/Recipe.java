@@ -16,6 +16,14 @@ public class Recipe {
         return name;
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public List<RecipeStep> getSteps() {
+        return steps;
+    }
+
     @Override
     public String toString() {
         return "ID: " + id + " Name: " + name + "\n Ingredients: " + ingredients +

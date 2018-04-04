@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.lpelczar.bakingapp.RecipeDetailsFragment.OnListFragmentInteractionListener;
+import com.example.lpelczar.bakingapp.RecipeDetailsFragment.OnRecipeDetailsFragmentInteractionListener;
 import com.example.lpelczar.bakingapp.models.Ingredient;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
@@ -20,9 +20,9 @@ public class HeterogeneousRecyclerViewAdapter extends
 
     private final List<RecipeDetail> recipeDetails;
     private final int INGREDIENT = 0, STEP = 1;
-    private final OnListFragmentInteractionListener listener;
+    private final OnRecipeDetailsFragmentInteractionListener listener;
 
-    HeterogeneousRecyclerViewAdapter(List<RecipeDetail> recipeDetails, OnListFragmentInteractionListener listener) {
+    HeterogeneousRecyclerViewAdapter(List<RecipeDetail> recipeDetails, OnRecipeDetailsFragmentInteractionListener listener) {
         this.recipeDetails = recipeDetails;
         this.listener = listener;
     }
@@ -76,7 +76,7 @@ public class HeterogeneousRecyclerViewAdapter extends
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.onListFragmentInteraction(ingredient);
+                    listener.onRecipeDetailItemInteraction(ingredient);
                 }
             }
         });
@@ -85,14 +85,14 @@ public class HeterogeneousRecyclerViewAdapter extends
     private void configureRecipeStepViewHolder(RecipeStepViewHolder recipeStepViewHolder, int position) {
 
         final RecipeStep recipeStep = (RecipeStep) recipeDetails.get(position);
-        recipeStepViewHolder.stepId.setText(recipeStep.getId());
+        recipeStepViewHolder.stepId.setText("1");
         recipeStepViewHolder.stepShortDescription.setText(recipeStep.getShortDescription());
 
         recipeStepViewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.onListFragmentInteraction(recipeStep);
+                    listener.onRecipeDetailItemInteraction(recipeStep);
                 }
             }
         });
