@@ -30,7 +30,7 @@ public class RecipeRecyclerViewAdapter extends
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_recipe, parent, false);
+                .inflate(R.layout.recipe_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -64,7 +64,7 @@ public class RecipeRecyclerViewAdapter extends
         public ViewHolder(View view) {
             super(view);
             this.view = view;
-            name = view.findViewById(R.id.name);
+            name = view.findViewById(R.id.recipe_name_tv);
         }
     }
 }
