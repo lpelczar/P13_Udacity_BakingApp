@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\lukas\Documents\AND\P13_Udacity_BakingApp\BakingApp.iml" filepath="C:\Users\lukas\Documents\AND\P13_Udacity_BakingApp\BakingApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/P13_Udacity_BakingApp.iml" filepath="$PROJECT_DIR$/.idea/P13_Udacity_BakingApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/P13_Udacity_BakingApp.iml" filepath="$PROJECT_DIR$/P13_Udacity_BakingApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
