@@ -67,9 +67,9 @@ public class HeterogeneousRecyclerViewAdapter extends
     private void configureIngredientViewHolder(IngredientViewHolder ingredientViewHolder, int position) {
 
         final Ingredient ingredient = (Ingredient) recipeDetails.get(position);
-        ingredientViewHolder.ingredientName.setText(ingredient.getName());
-        ingredientViewHolder.ingredientMeasure.setText(ingredient.getMeasure());
-        ingredientViewHolder.ingredientQuantity.setText(String.format(Locale.getDefault() ,"%.2f",
+        ingredientViewHolder.ingredientName.setText(String.format("- %s", ingredient.getName()));
+        ingredientViewHolder.ingredientMeasure.setText(String.format("(%s)", ingredient.getMeasure()));
+        ingredientViewHolder.ingredientQuantity.setText(String.format(Locale.getDefault() ,"%.1f",
                 ingredient.getQuantity()));
 
         ingredientViewHolder.view.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +85,8 @@ public class HeterogeneousRecyclerViewAdapter extends
     private void configureRecipeStepViewHolder(RecipeStepViewHolder recipeStepViewHolder, int position) {
 
         final RecipeStep recipeStep = (RecipeStep) recipeDetails.get(position);
-        recipeStepViewHolder.stepId.setText("1");
+        recipeStepViewHolder.stepId.setText(String.format(Locale.getDefault(),"Step %d",
+                recipeStep.getId() + 1));
         recipeStepViewHolder.stepShortDescription.setText(recipeStep.getShortDescription());
 
         recipeStepViewHolder.view.setOnClickListener(new View.OnClickListener() {
