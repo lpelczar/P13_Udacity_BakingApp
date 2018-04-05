@@ -11,6 +11,7 @@ import com.example.lpelczar.bakingapp.RecipeFragment.OnRecipeFragmentInteraction
 import com.example.lpelczar.bakingapp.models.Recipe;
 
 import java.util.List;
+import java.util.Locale;
 
 public class RecipeRecyclerViewAdapter extends
         RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
@@ -33,15 +34,17 @@ public class RecipeRecyclerViewAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.recipe = recipes.get(position);
-        holder.name.setText(recipes.get(position).getName());
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        final Recipe recipe = recipes.get(position);
+        holder.name.setText(recipe.getName());
+        holder.servings.setText(String.format(Locale.getDefault(), "Servings: %s",
+                recipe.getServings()));
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.onRecipeItemInteraction(holder.recipe);
+                    listener.onRecipeItemInteraction(recipe);
                 }
             }
         });
@@ -52,15 +55,16 @@ public class RecipeRecyclerViewAdapter extends
         return recipes.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View view;
-        public final TextView name;
-        public Recipe recipe;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final View view;
+        final TextView name;
+        final TextView servings;
 
         ViewHolder(View view) {
             super(view);
             this.view = view;
             name = view.findViewById(R.id.recipe_name_tv);
+            servings = view.findViewById(R.id.recipe_servings_tv);
         }
     }
 }

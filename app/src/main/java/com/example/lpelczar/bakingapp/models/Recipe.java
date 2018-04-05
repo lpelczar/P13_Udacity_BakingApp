@@ -20,6 +20,10 @@ public class Recipe {
         return ingredients;
     }
 
+    public int getServings() {
+        return servings;
+    }
+
     public List<RecipeStep> getSteps() {
         return steps;
     }
