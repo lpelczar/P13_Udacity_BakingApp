@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.lpelczar.bakingapp.models.Recipe;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
+import com.example.lpelczar.bakingapp.models.RecipeStep;
 import com.example.lpelczar.bakingapp.services.RecipeAPIService;
 
 import java.util.ArrayList;
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onRecipeDetailItemInteraction(RecipeDetail item) {
-        Toast.makeText(getApplicationContext(), item.toString(), Toast.LENGTH_LONG).show();
+        if (item instanceof RecipeStep) {
+            Toast.makeText(getApplicationContext(), item.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 }
