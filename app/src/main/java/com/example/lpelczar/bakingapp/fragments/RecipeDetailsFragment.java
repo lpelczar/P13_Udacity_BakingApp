@@ -1,4 +1,4 @@
-package com.example.lpelczar.bakingapp;
+package com.example.lpelczar.bakingapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,27 +11,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.lpelczar.bakingapp.models.Recipe;
+import com.example.lpelczar.bakingapp.adapters.HeterogeneousRecyclerViewAdapter;
+import com.example.lpelczar.bakingapp.R;
+import com.example.lpelczar.bakingapp.models.RecipeDetail;
 
 import java.util.List;
 
-public class RecipeFragment extends Fragment {
+
+public class RecipeDetailsFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int columnCount = 1;
-    private OnRecipeFragmentInteractionListener listener;
-    private List<Recipe> recipes;
+    private OnRecipeDetailsFragmentInteractionListener listener;
 
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
+    private List<RecipeDetail> recipeDetails;
+
+    public void setRecipeDetails(List<RecipeDetail> recipeDetails) {
+        this.recipeDetails = recipeDetails;
     }
 
-    public RecipeFragment() {
+    public RecipeDetailsFragment() {
     }
 
     @SuppressWarnings("unused")
-    public static RecipeFragment newInstance(int columnCount) {
-        RecipeFragment fragment = new RecipeFragment();
+    public static RecipeDetailsFragment newInstance(int columnCount) {
+        RecipeDetailsFragment fragment = new RecipeDetailsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -50,7 +54,7 @@ public class RecipeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_recipe_details_list, container, false);
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -60,16 +64,17 @@ public class RecipeFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
             }
-            recyclerView.setAdapter(new RecipeRecyclerViewAdapter(recipes, listener));
+            recyclerView.setAdapter(new HeterogeneousRecyclerViewAdapter(recipeDetails, listener));
         }
         return view;
     }
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnRecipeFragmentInteractionListener) {
-            listener = (OnRecipeFragmentInteractionListener) context;
+        if (context instanceof OnRecipeDetailsFragmentInteractionListener) {
+            listener = (OnRecipeDetailsFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -82,7 +87,7 @@ public class RecipeFragment extends Fragment {
         listener = null;
     }
 
-    public interface OnRecipeFragmentInteractionListener {
-        void onRecipeItemInteraction(Recipe recipe);
+    public interface OnRecipeDetailsFragmentInteractionListener {
+        void onRecipeDetailItemInteraction(RecipeDetail item);
     }
 }

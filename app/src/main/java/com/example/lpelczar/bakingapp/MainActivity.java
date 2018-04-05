@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.example.lpelczar.bakingapp.fragments.RecipeDetailsFragment;
+import com.example.lpelczar.bakingapp.fragments.RecipeFragment;
 import com.example.lpelczar.bakingapp.models.Recipe;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
 import com.example.lpelczar.bakingapp.models.RecipeStep;

@@ -1,4 +1,4 @@
-package com.example.lpelczar.bakingapp;
+package com.example.lpelczar.bakingapp.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.lpelczar.bakingapp.RecipeDetailsFragment.OnRecipeDetailsFragmentInteractionListener;
+import com.example.lpelczar.bakingapp.R;
+import com.example.lpelczar.bakingapp.fragments.RecipeDetailsFragment.OnRecipeDetailsFragmentInteractionListener;
 import com.example.lpelczar.bakingapp.models.Ingredient;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
@@ -22,7 +23,7 @@ public class HeterogeneousRecyclerViewAdapter extends
     private final int INGREDIENT = 0, STEP = 1;
     private final OnRecipeDetailsFragmentInteractionListener listener;
 
-    HeterogeneousRecyclerViewAdapter(List<RecipeDetail> recipeDetails, OnRecipeDetailsFragmentInteractionListener listener) {
+    public HeterogeneousRecyclerViewAdapter(List<RecipeDetail> recipeDetails, OnRecipeDetailsFragmentInteractionListener listener) {
         this.recipeDetails = recipeDetails;
         this.listener = listener;
     }

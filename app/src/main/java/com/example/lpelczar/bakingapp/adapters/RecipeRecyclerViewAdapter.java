@@ -1,4 +1,4 @@
-package com.example.lpelczar.bakingapp;
+package com.example.lpelczar.bakingapp.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.lpelczar.bakingapp.RecipeFragment.OnRecipeFragmentInteractionListener;
+import com.example.lpelczar.bakingapp.R;
+import com.example.lpelczar.bakingapp.fragments.RecipeFragment.OnRecipeFragmentInteractionListener;
 import com.example.lpelczar.bakingapp.models.Recipe;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class RecipeRecyclerViewAdapter extends
     private final List<Recipe> recipes;
     private final OnRecipeFragmentInteractionListener listener;
 
-    RecipeRecyclerViewAdapter(List<Recipe> recipes,
+    public RecipeRecyclerViewAdapter(List<Recipe> recipes,
                               OnRecipeFragmentInteractionListener listener) {
         this.recipes = recipes;
         this.listener = listener;
@@ -27,7 +28,7 @@ public class RecipeRecyclerViewAdapter extends
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recipe_item, parent, false);
         return new ViewHolder(view);

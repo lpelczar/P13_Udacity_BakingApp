@@ -5,7 +5,7 @@
         android:id="@+id/recipe_details_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:padding="6dp"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:context="com.example.lpelczar.bakingapp.RecipeDetailsFragment"
+        tools:context="com.example.lpelczar.bakingapp.fragments.RecipeDetailsFragment"
         tools:listitem="@layout/ingredient_item" />
