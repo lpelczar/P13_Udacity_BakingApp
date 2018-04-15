@@ -2,6 +2,7 @@ package com.example.lpelczar.bakingapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,29 +16,29 @@ import com.example.lpelczar.bakingapp.adapters.HeterogeneousRecyclerViewAdapter;
 import com.example.lpelczar.bakingapp.R;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class RecipeDetailsFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private int columnCount = 1;
-    private OnRecipeDetailsFragmentInteractionListener listener;
+    private static final String ARG_RECIPE_DETAILS = "recipe-details";
 
+    private int columnCount = 1;
     private List<RecipeDetail> recipeDetails;
 
-    public void setRecipeDetails(List<RecipeDetail> recipeDetails) {
-        this.recipeDetails = recipeDetails;
-    }
+    private OnRecipeDetailsFragmentInteractionListener listener;
 
     public RecipeDetailsFragment() {
     }
 
     @SuppressWarnings("unused")
-    public static RecipeDetailsFragment newInstance(int columnCount) {
+    public static RecipeDetailsFragment newInstance(int columnCount, List<RecipeDetail> recipeDetails) {
         RecipeDetailsFragment fragment = new RecipeDetailsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putParcelableArrayList(ARG_RECIPE_DETAILS, new ArrayList<>(recipeDetails));
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,6 +49,7 @@ public class RecipeDetailsFragment extends Fragment {
 
         if (getArguments() != null) {
             columnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            recipeDetails = getArguments().getParcelableArrayList(ARG_RECIPE_DETAILS);
         }
     }
 

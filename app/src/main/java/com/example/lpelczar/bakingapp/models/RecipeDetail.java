@@ -1,4 +1,6 @@
 package com.example.lpelczar.bakingapp.models;
 
-public interface RecipeDetail {
+import android.os.Parcelable;
+
+public interface RecipeDetail extends Parcelable {
 }
