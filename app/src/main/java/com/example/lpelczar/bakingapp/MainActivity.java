@@ -1,6 +1,8 @@
 package com.example.lpelczar.bakingapp;
 
 
+import android.content.Intent;
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -22,16 +24,12 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity implements
-        RecipeFragment.OnRecipeFragmentInteractionListener,
-        RecipeDetailsFragment.OnRecipeDetailsFragmentInteractionListener {
-
-    List<Recipe> recipes = new ArrayList<>();
+        RecipeFragment.OnRecipeFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         getRecipesFromApi();
     }
 
@@ -45,10 +43,8 @@ public class MainActivity extends AppCompatActivity implements
         service.getRecipes(new Callback<List<Recipe>>() {
             @Override
             public void success(List<Recipe> recipeResult, Response response) {
-                recipes.addAll(recipeResult);
-                startRecipesFragment();
+                startRecipesFragment(recipeResult);
             }
-
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
@@ -56,9 +52,8 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private void startRecipesFragment() {
+    private void startRecipesFragment(List<Recipe> recipes) {
         RecipeFragment recipeFragment = RecipeFragment.newInstance(1, recipes);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.fragment, recipeFragment)
@@ -67,22 +62,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onRecipeItemInteraction(Recipe recipe) {
-        List<RecipeDetail> recipeDetails = new ArrayList<>();
-        recipeDetails.addAll(recipe.getIngredients());
-        recipeDetails.addAll(recipe.getSteps());
-        RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(
-                1, recipeDetails);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment, recipeDetailsFragment)
-                .commit();
-    }
-
-    @Override
-    public void onRecipeDetailItemInteraction(RecipeDetail item) {
-        if (item instanceof RecipeStep) {
-            Toast.makeText(getApplicationContext(), item.toString(), Toast.LENGTH_LONG).show();
-        }
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_RECIPE, recipe);
+        startActivity(intent);
     }
 }
