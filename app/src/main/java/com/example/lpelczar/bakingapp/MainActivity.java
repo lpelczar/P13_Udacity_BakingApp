@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void startRecipesFragment() {
-        RecipeFragment recipeFragment = RecipeFragment.newInstance(1);
-        recipeFragment.setRecipes(recipes);
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(1, recipes);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -68,11 +67,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onRecipeItemInteraction(Recipe recipe) {
-        RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(1);
         List<RecipeDetail> recipeDetails = new ArrayList<>();
         recipeDetails.addAll(recipe.getIngredients());
         recipeDetails.addAll(recipe.getSteps());
-        recipeDetailsFragment.setRecipeDetails(recipeDetails);
+        RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(
+                1, recipeDetails);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
