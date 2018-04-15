@@ -1,7 +1,10 @@
 package com.example.lpelczar.bakingapp.models;
 
 
-public class RecipeStep implements RecipeDetail {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class RecipeStep implements RecipeDetail, Parcelable {
 
     private int id;
     private String shortDescription;
@@ -21,5 +24,38 @@ public class RecipeStep implements RecipeDetail {
     public String toString() {
         return "ID: " + id + " Short Description: " + shortDescription + " Description: " +
                 description + " Video URL " + videoURL + " Thumbnail URL: " + thumbnailURL;
+    }
+
+    //Parcelable
+    public static final Parcelable.Creator<RecipeStep> CREATOR = new Parcelable.Creator<RecipeStep>() {
+        public RecipeStep createFromParcel(Parcel in) {
+            return new RecipeStep(in);
+        }
+
+        public RecipeStep[] newArray(int size) {
+            return new RecipeStep[size];
+        }
+    };
+
+    private RecipeStep(Parcel in){
+        this.id = in.readInt();
+        this.shortDescription = in.readString();
+        this.description =  in.readString();
+        this.videoURL =  in.readString();
+        this.thumbnailURL =  in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.shortDescription);
+        dest.writeString(this.description);
+        dest.writeString(this.videoURL);
+        dest.writeString(this.thumbnailURL);
     }
 }
