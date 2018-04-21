@@ -2,10 +2,12 @@ package com.example.lpelczar.bakingapp;
 
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lpelczar.bakingapp.fragments.RecipeDetailsFragment;
@@ -53,7 +55,17 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void startRecipesFragment(List<Recipe> recipes) {
-        RecipeFragment recipeFragment = RecipeFragment.newInstance(1, recipes);
+
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if (tabletSize) {
+            startFragment(recipes, 3);
+        } else {
+            startFragment(recipes, 1);
+        }
+    }
+
+    private void startFragment(List<Recipe> recipes, int columnCount) {
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(columnCount, recipes);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.fragment, recipeFragment)
