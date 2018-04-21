@@ -22,10 +22,7 @@ import java.util.List;
 
 public class RecipeDetailsFragment extends Fragment {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_RECIPE_DETAILS = "recipe-details";
-
-    private int columnCount = 1;
     private List<RecipeDetail> recipeDetails;
 
     private OnRecipeDetailsFragmentInteractionListener listener;
@@ -37,7 +34,6 @@ public class RecipeDetailsFragment extends Fragment {
     public static RecipeDetailsFragment newInstance(int columnCount, List<RecipeDetail> recipeDetails) {
         RecipeDetailsFragment fragment = new RecipeDetailsFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         args.putParcelableArrayList(ARG_RECIPE_DETAILS, new ArrayList<>(recipeDetails));
         fragment.setArguments(args);
         return fragment;
@@ -48,7 +44,6 @@ public class RecipeDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            columnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             recipeDetails = getArguments().getParcelableArrayList(ARG_RECIPE_DETAILS);
         }
     }
@@ -61,11 +56,7 @@ public class RecipeDetailsFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (columnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new HeterogeneousRecyclerViewAdapter(recipeDetails, listener));
         }
         return view;
