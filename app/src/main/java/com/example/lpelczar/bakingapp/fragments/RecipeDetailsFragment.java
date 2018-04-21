@@ -2,18 +2,16 @@ package com.example.lpelczar.bakingapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.lpelczar.bakingapp.adapters.HeterogeneousRecyclerViewAdapter;
 import com.example.lpelczar.bakingapp.R;
+import com.example.lpelczar.bakingapp.adapters.HeterogeneousRecyclerViewAdapter;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
 
 import java.util.ArrayList;

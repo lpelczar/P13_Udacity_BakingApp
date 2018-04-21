@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.lpelczar.bakingapp.fragments.RecipeDetailsFragment;
+import com.example.lpelczar.bakingapp.fragments.RecipeStepFragment;
 import com.example.lpelczar.bakingapp.models.Recipe;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
@@ -39,7 +40,7 @@ public class DetailActivity extends AppCompatActivity implements
             }
         }
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        assert recipe != null;
         setTitle(recipe.getName());
         startRecipeDetailsFragment();
     }
@@ -60,7 +61,14 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void onRecipeDetailItemInteraction(RecipeDetail item) {
         if (item instanceof RecipeStep) {
-            Toast.makeText(getApplicationContext(), item.toString(), Toast.LENGTH_LONG).show();
+
+            RecipeStep recipeStep = (RecipeStep) item;
+            RecipeStepFragment recipeStepFragment = RecipeStepFragment.newInstance(recipeStep, false);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment, recipeStepFragment)
+                    .commit();
         }
     }
 

@@ -87,7 +87,7 @@ public class HeterogeneousRecyclerViewAdapter extends
 
         final RecipeStep recipeStep = (RecipeStep) recipeDetails.get(position);
         recipeStepViewHolder.stepId.setText(String.format(Locale.getDefault(),"Step %d",
-                recipeStep.getId() + 1));
+                recipeStep.getId()));
         recipeStepViewHolder.stepShortDescription.setText(recipeStep.getShortDescription());
 
         recipeStepViewHolder.view.setOnClickListener(new View.OnClickListener() {

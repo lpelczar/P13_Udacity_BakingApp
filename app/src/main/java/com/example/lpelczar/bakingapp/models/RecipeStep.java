@@ -20,6 +20,10 @@ public class RecipeStep implements RecipeDetail, Parcelable {
         return shortDescription;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return "ID: " + id + " Short Description: " + shortDescription + " Description: " +
