@@ -28,6 +28,10 @@ public class RecipeStep implements RecipeDetail, Parcelable {
         return videoURL;
     }
 
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
+
     @Override
     public String toString() {
         return "ID: " + id + " Short Description: " + shortDescription + " Description: " +

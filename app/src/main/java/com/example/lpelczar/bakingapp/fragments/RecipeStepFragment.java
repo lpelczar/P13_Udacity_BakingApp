@@ -9,6 +9,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lpelczar.bakingapp.R;
@@ -26,6 +27,9 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Objects;
 
 
@@ -74,12 +78,29 @@ public class RecipeStepFragment extends Fragment {
         descriptionTextView.setText(recipeStep.getDescription());
 
         playerView = view.findViewById(R.id.playerView);
-
-        initializeMediaSession();
-
-        initializePlayer(Uri.parse(recipeStep.getVideoURL()));
+        if (isCorrectUrl(recipeStep.getVideoURL())) {
+            initializeMediaSession();
+            initializePlayer(Uri.parse(recipeStep.getVideoURL()));
+        } else if (isCorrectUrl(recipeStep.getThumbnailURL())) {
+            initializeMediaSession();
+            initializePlayer(Uri.parse(recipeStep.getThumbnailURL()));
+        } else {
+            playerView.setVisibility(View.GONE);
+            ImageView video = view.findViewById(R.id.no_video_iv);
+            video.setImageDrawable(getResources().getDrawable(R.drawable.novideo));
+        }
 
         return view;
+    }
+
+    private boolean isCorrectUrl(String url) {
+        try {
+            URL videoURL = new URL(url);
+            videoURL.toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException e) {
+            return false;
+        }
     }
 
     /**
@@ -168,15 +189,19 @@ public class RecipeStepFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
-        mediaSession.setActive(false);
+        if (mediaSession != null) {
+            mediaSession.setActive(false);
+        }
     }
 
     /**
      * Release ExoPlayer.
      */
     private void releasePlayer() {
-        exoPlayer.stop();
-        exoPlayer.release();
-        exoPlayer = null;
+        if (exoPlayer != null) {
+            exoPlayer.stop();
+            exoPlayer.release();
+            exoPlayer = null;
+        }
     }
 }
