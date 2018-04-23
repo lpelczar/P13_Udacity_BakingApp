@@ -1,8 +1,11 @@
 package com.example.lpelczar.bakingapp.fragments;
 
-import android.support.v4.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,20 @@ import android.widget.TextView;
 
 import com.example.lpelczar.bakingapp.R;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+
+import java.util.Objects;
 
 
 public class RecipeStepFragment extends Fragment {
@@ -18,6 +35,11 @@ public class RecipeStepFragment extends Fragment {
     private static final String ARG_RECIPE_STEP = "recipe-step";
     private RecipeStep recipeStep;
     private boolean isLandscape = false;
+
+    private SimpleExoPlayer exoPlayer;
+    private SimpleExoPlayerView playerView;
+    private static MediaSessionCompat mediaSession;
+    private PlaybackStateCompat.Builder stateBuilder;
 
     public RecipeStepFragment() {
     }
@@ -51,6 +73,110 @@ public class RecipeStepFragment extends Fragment {
         TextView descriptionTextView = view.findViewById(R.id.step_description_tv);
         descriptionTextView.setText(recipeStep.getDescription());
 
+        playerView = view.findViewById(R.id.playerView);
+
+        initializeMediaSession();
+
+        initializePlayer(Uri.parse(recipeStep.getVideoURL()));
+
         return view;
+    }
+
+    /**
+     * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
+     * and media controller.
+     */
+    private void initializeMediaSession() {
+
+        // Create a MediaSessionCompat.
+        mediaSession = new MediaSessionCompat(Objects.requireNonNull(getActivity()), "DetailActivity");
+
+        // Enable callbacks from MediaButtons and TransportControls.
+        mediaSession.setFlags(
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
+                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
+        // Do not let MediaButtons restart the player when the app is not visible.
+        mediaSession.setMediaButtonReceiver(null);
+
+        // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player.
+        stateBuilder = new PlaybackStateCompat.Builder()
+                .setActions(
+                        PlaybackStateCompat.ACTION_PLAY |
+                                PlaybackStateCompat.ACTION_PAUSE |
+                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
+
+        mediaSession.setPlaybackState(stateBuilder.build());
+
+
+        // MySessionCallback has methods that handle callbacks from a media controller.
+        mediaSession.setCallback(new MySessionCallback());
+
+        // Start the Media Session since the activity is active.
+        mediaSession.setActive(true);
+
+    }
+
+    /**
+     * Media Session Callbacks, where all external clients control the player.
+     */
+    private class MySessionCallback extends MediaSessionCompat.Callback {
+        @Override
+        public void onPlay() {
+            exoPlayer.setPlayWhenReady(true);
+        }
+
+        @Override
+        public void onPause() {
+            exoPlayer.setPlayWhenReady(false);
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            exoPlayer.seekTo(0);
+        }
+    }
+
+    /**
+     * Initialize ExoPlayer.
+     * @param mediaUri The URI of the sample to play.
+     */
+    private void initializePlayer(Uri mediaUri) {
+        if (exoPlayer == null) {
+            // Create an instance of the ExoPlayer.
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            LoadControl loadControl = new DefaultLoadControl();
+            exoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
+            playerView.setPlayer(exoPlayer);
+
+            // Prepare the MediaSource.
+            String userAgent = Util.getUserAgent(getActivity(), "BakingApp");
+
+            MediaSource mediaSource = new ExtractorMediaSource(mediaUri,
+                    new DefaultDataSourceFactory(Objects.requireNonNull(getActivity()), userAgent),
+                    new DefaultExtractorsFactory(), null, null);
+            exoPlayer.prepare(mediaSource);
+            exoPlayer.setPlayWhenReady(true);
+        }
+    }
+
+    /**
+     * Release the player when the activity is destroyed.
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+        mediaSession.setActive(false);
+    }
+
+    /**
+     * Release ExoPlayer.
+     */
+    private void releasePlayer() {
+        exoPlayer.stop();
+        exoPlayer.release();
+        exoPlayer = null;
     }
 }

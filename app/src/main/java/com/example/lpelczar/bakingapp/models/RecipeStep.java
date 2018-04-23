@@ -24,6 +24,10 @@ public class RecipeStep implements RecipeDetail, Parcelable {
         return description;
     }
 
+    public String getVideoURL() {
+        return videoURL;
+    }
+
     @Override
     public String toString() {
         return "ID: " + id + " Short Description: " + shortDescription + " Description: " +
