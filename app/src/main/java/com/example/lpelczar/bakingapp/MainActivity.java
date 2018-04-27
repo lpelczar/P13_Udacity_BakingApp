@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Movie;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,9 +29,18 @@ import retrofit.client.Response;
 public class MainActivity extends AppCompatActivity implements
         RecipeFragment.OnRecipeFragmentInteractionListener {
 
+    public static final String ARG_RECIPE_FRAGMENT = "recipe-fragment";
+    private RecipeFragment recipeFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            recipeFragment = (RecipeFragment) getSupportFragmentManager().getFragment(
+                    savedInstanceState, ARG_RECIPE_FRAGMENT);
+        }
+
         setContentView(R.layout.activity_main);
         getRecipesFromApi();
     }
@@ -77,5 +87,11 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_RECIPE, recipe);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        getSupportFragmentManager().putFragment(outState, ARG_RECIPE_FRAGMENT, recipeFragment);
+        super.onSaveInstanceState(outState);
     }
 }
