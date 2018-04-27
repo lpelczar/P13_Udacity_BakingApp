@@ -46,6 +46,11 @@ public class RecipeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            columnCount = savedInstanceState.getInt(ARG_COLUMN_COUNT);
+            recipes = savedInstanceState.getParcelableArrayList(ARG_RECIPES);
+        }
+
         if (getArguments() != null) {
             columnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             recipes = getArguments().getParcelableArrayList(ARG_RECIPES);
@@ -89,5 +94,12 @@ public class RecipeFragment extends Fragment {
 
     public interface OnRecipeFragmentInteractionListener {
         void onRecipeItemInteraction(Recipe recipe);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(ARG_COLUMN_COUNT, columnCount);
+        outState.putParcelableArrayList(ARG_RECIPES, new ArrayList<>(recipes));
+        super.onSaveInstanceState(outState);
     }
 }
