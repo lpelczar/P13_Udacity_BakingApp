@@ -21,6 +21,7 @@ public class DetailActivity extends AppCompatActivity implements
     public static final String EXTRA_RECIPE = "extra_recipe";
     private final String RECIPE_KEY = "Recipe";
     private Recipe recipe;
+    private final String TWO_PANE_KEY = "TwoPane";
     private boolean twoPaneMode;
 
     @Override
@@ -30,6 +31,7 @@ public class DetailActivity extends AppCompatActivity implements
 
         if (savedInstanceState != null) {
             recipe = savedInstanceState.getParcelable(RECIPE_KEY);
+            twoPaneMode = savedInstanceState.getBoolean(TWO_PANE_KEY);
         } else {
             if (getIntent() == null) closeOnError();
             Bundle data = getIntent().getExtras();
@@ -113,6 +115,7 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(RECIPE_KEY, recipe);
+        outState.putBoolean(TWO_PANE_KEY, twoPaneMode);
         super.onSaveInstanceState(outState);
     }
 }
