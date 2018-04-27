@@ -72,9 +72,11 @@ public class DetailActivity extends AppCompatActivity implements
                     .add(R.id.recipe_details_fragment, recipeDetailsFragment)
                     .commit();
 
-            recipeStepFragment = RecipeStepFragment.newInstance(recipe.getSteps().get(0), false);
+            if (recipeStepFragment == null) {
+                recipeStepFragment = RecipeStepFragment.newInstance(recipe.getSteps().get(0), false);
+            }
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.recipe_step_fragment, recipeStepFragment)
+                    .replace(R.id.recipe_step_fragment, recipeStepFragment)
                     .commit();
         } else {
             if (recipeStepFragment != null) {
