@@ -77,9 +77,15 @@ public class DetailActivity extends AppCompatActivity implements
                     .add(R.id.recipe_step_fragment, recipeStepFragment)
                     .commit();
         } else {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment, recipeDetailsFragment)
-                    .commit();
+            if (recipeStepFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, recipeStepFragment)
+                        .commit();
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, recipeDetailsFragment)
+                        .commit();
+            }
         }
     }
 
@@ -87,7 +93,6 @@ public class DetailActivity extends AppCompatActivity implements
     public void onRecipeDetailItemInteraction(RecipeDetail item) {
 
         if (item instanceof RecipeStep) {
-
             recipeStepFragment = RecipeStepFragment.newInstance((RecipeStep) item, false);
 
             if (twoPaneMode) {
@@ -112,8 +117,14 @@ public class DetailActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(ARG_RECIPE, recipe);
         outState.putBoolean(ARG_TWO_PANE, twoPaneMode);
-        getSupportFragmentManager().putFragment(outState, ARG_RECIPE_DETAILS_FRAGMENT, recipeDetailsFragment);
-        getSupportFragmentManager().putFragment(outState, ARG_RECIPE_STEP_FRAGMENT, recipeStepFragment);
+        if (recipeDetailsFragment != null && recipeDetailsFragment.isAdded()) {
+            getSupportFragmentManager()
+                    .putFragment(outState, ARG_RECIPE_DETAILS_FRAGMENT, recipeDetailsFragment);
+        }
+        if (recipeStepFragment != null && recipeStepFragment.isAdded()) {
+            getSupportFragmentManager()
+                    .putFragment(outState, ARG_RECIPE_STEP_FRAGMENT, recipeStepFragment);
+        }
         super.onSaveInstanceState(outState);
     }
 }
