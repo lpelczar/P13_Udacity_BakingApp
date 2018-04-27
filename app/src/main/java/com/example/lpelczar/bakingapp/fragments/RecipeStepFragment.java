@@ -37,13 +37,12 @@ public class RecipeStepFragment extends Fragment {
 
     private static final String ARG_IS_LANDSCAPE = "is-landscape";
     private static final String ARG_RECIPE_STEP = "recipe-step";
-    private RecipeStep recipeStep;
-    private boolean isLandscape = false;
 
+    private boolean isLandscape = false;
+    private RecipeStep recipeStep;
     private SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView playerView;
     private static MediaSessionCompat mediaSession;
-    private PlaybackStateCompat.Builder stateBuilder;
 
     public RecipeStepFragment() {
     }
@@ -62,6 +61,11 @@ public class RecipeStepFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            isLandscape = savedInstanceState.getBoolean(ARG_IS_LANDSCAPE);
+            recipeStep = savedInstanceState.getParcelable(ARG_RECIPE_STEP);
+        }
 
         if (getArguments() != null) {
             isLandscape = getArguments().getBoolean(ARG_IS_LANDSCAPE);
@@ -103,25 +107,15 @@ public class RecipeStepFragment extends Fragment {
         }
     }
 
-    /**
-     * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
-     * and media controller.
-     */
     private void initializeMediaSession() {
 
-        // Create a MediaSessionCompat.
         mediaSession = new MediaSessionCompat(Objects.requireNonNull(getActivity()), "DetailActivity");
-
-        // Enable callbacks from MediaButtons and TransportControls.
         mediaSession.setFlags(
                 MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
                         MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-
-        // Do not let MediaButtons restart the player when the app is not visible.
         mediaSession.setMediaButtonReceiver(null);
 
-        // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player.
-        stateBuilder = new PlaybackStateCompat.Builder()
+        PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
                 .setActions(
                         PlaybackStateCompat.ACTION_PLAY |
                                 PlaybackStateCompat.ACTION_PAUSE |
@@ -129,19 +123,11 @@ public class RecipeStepFragment extends Fragment {
                                 PlaybackStateCompat.ACTION_PLAY_PAUSE);
 
         mediaSession.setPlaybackState(stateBuilder.build());
-
-
-        // MySessionCallback has methods that handle callbacks from a media controller.
         mediaSession.setCallback(new MySessionCallback());
-
-        // Start the Media Session since the activity is active.
         mediaSession.setActive(true);
 
     }
 
-    /**
-     * Media Session Callbacks, where all external clients control the player.
-     */
     private class MySessionCallback extends MediaSessionCompat.Callback {
         @Override
         public void onPlay() {
@@ -159,19 +145,13 @@ public class RecipeStepFragment extends Fragment {
         }
     }
 
-    /**
-     * Initialize ExoPlayer.
-     * @param mediaUri The URI of the sample to play.
-     */
     private void initializePlayer(Uri mediaUri) {
         if (exoPlayer == null) {
-            // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             exoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
             playerView.setPlayer(exoPlayer);
 
-            // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(getActivity(), "BakingApp");
 
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri,
@@ -182,9 +162,6 @@ public class RecipeStepFragment extends Fragment {
         }
     }
 
-    /**
-     * Release the player when the activity is destroyed.
-     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -194,14 +171,18 @@ public class RecipeStepFragment extends Fragment {
         }
     }
 
-    /**
-     * Release ExoPlayer.
-     */
     private void releasePlayer() {
         if (exoPlayer != null) {
             exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(ARG_IS_LANDSCAPE, isLandscape);
+        outState.putParcelable(ARG_RECIPE_STEP, recipeStep);
+        super.onSaveInstanceState(outState);
     }
 }
