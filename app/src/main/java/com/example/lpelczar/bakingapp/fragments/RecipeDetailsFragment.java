@@ -2,6 +2,7 @@ package com.example.lpelczar.bakingapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,10 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            recipeDetails = savedInstanceState.getParcelableArrayList(ARG_RECIPE_DETAILS);
+        }
 
         if (getArguments() != null) {
             recipeDetails = getArguments().getParcelableArrayList(ARG_RECIPE_DETAILS);
@@ -80,5 +85,12 @@ public class RecipeDetailsFragment extends Fragment {
 
     public interface OnRecipeDetailsFragmentInteractionListener {
         void onRecipeDetailItemInteraction(RecipeDetail item);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelableArrayList(ARG_RECIPE_DETAILS, new ArrayList<>(recipeDetails));
+        super.onSaveInstanceState(outState);
+
     }
 }
