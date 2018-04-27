@@ -21,6 +21,7 @@ public class DetailActivity extends AppCompatActivity implements
     public static final String EXTRA_RECIPE = "extra_recipe";
     private final String RECIPE_KEY = "Recipe";
     private Recipe recipe;
+    private boolean twoPaneMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +50,36 @@ public class DetailActivity extends AppCompatActivity implements
         List<RecipeDetail> recipeDetails = new ArrayList<>();
         recipeDetails.addAll(recipe.getIngredients());
         recipeDetails.addAll(recipe.getSteps());
-        RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(
-                1, recipeDetails);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment, recipeDetailsFragment)
-                .commit();
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+
+        if (tabletSize) {
+
+            twoPaneMode = true;
+
+            RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(
+                    1, recipeDetails);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.recipe_details_fragment, recipeDetailsFragment)
+                    .commit();
+
+            RecipeStep recipeStep = recipe.getSteps().get(0);
+            RecipeStepFragment recipeStepFragment = RecipeStepFragment.newInstance(recipeStep, false);
+
+            FragmentManager stepFragmentManager = getSupportFragmentManager();
+            stepFragmentManager.beginTransaction()
+                    .add(R.id.recipe_step_fragment, recipeStepFragment)
+                    .commit();
+        }
     }
 
     @Override
     public void onRecipeDetailItemInteraction(RecipeDetail item) {
         if (item instanceof RecipeStep) {
-
-            RecipeStep recipeStep = (RecipeStep) item;
-            RecipeStepFragment recipeStepFragment = RecipeStepFragment.newInstance(recipeStep, false);
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment, recipeStepFragment)
-                    .commit();
+            Toast.makeText(this, item.toString(), Toast.LENGTH_SHORT).show();
+            // Implement changing elements
         }
     }
 
