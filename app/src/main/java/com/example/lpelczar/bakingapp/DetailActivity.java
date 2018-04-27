@@ -52,9 +52,7 @@ public class DetailActivity extends AppCompatActivity implements
         recipeDetails.addAll(recipe.getSteps());
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
-
         if (tabletSize) {
-
             twoPaneMode = true;
 
             RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(
@@ -72,15 +70,39 @@ public class DetailActivity extends AppCompatActivity implements
             stepFragmentManager.beginTransaction()
                     .add(R.id.recipe_step_fragment, recipeStepFragment)
                     .commit();
+        } else {
+            RecipeDetailsFragment recipeDetailsFragment = RecipeDetailsFragment.newInstance(
+                    1, recipeDetails);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment, recipeDetailsFragment)
+                    .commit();
         }
     }
 
     @Override
     public void onRecipeDetailItemInteraction(RecipeDetail item) {
+
         if (item instanceof RecipeStep) {
-            Toast.makeText(this, item.toString(), Toast.LENGTH_SHORT).show();
-            // Implement changing elements
+
+            RecipeStep recipeStep = (RecipeStep) item;
+            RecipeStepFragment recipeStepFragment = RecipeStepFragment.newInstance(recipeStep,
+                    false);
+
+            FragmentManager stepFragmentManager = getSupportFragmentManager();
+
+            if (twoPaneMode) {
+                stepFragmentManager.beginTransaction()
+                        .replace(R.id.recipe_step_fragment, recipeStepFragment)
+                        .commit();
+            } else {
+                stepFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, recipeStepFragment)
+                        .commit();
+            }
         }
+
     }
 
     private void closeOnError() {
