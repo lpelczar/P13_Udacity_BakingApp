@@ -18,11 +18,15 @@ import java.util.Objects;
 public class DetailActivity extends AppCompatActivity implements
         RecipeDetailsFragment.OnRecipeDetailsFragmentInteractionListener {
 
-    public static final String EXTRA_RECIPE = "extra_recipe";
-    private final String RECIPE_KEY = "Recipe";
+    public static final String ARG_RECIPE = "extra-recipe";
+    public static final String ARG_TWO_PANE = "two-pane";
+    public static final String ARG_RECIPE_DETAILS_FRAGMENT = "recipe-details-fragment";
+    public static final String ARG_RECIPE_STEP_FRAGMENT = "recipe-step-fragment";
+
     private Recipe recipe;
-    private final String TWO_PANE_KEY = "TwoPane";
     private boolean twoPaneMode;
+    private RecipeDetailsFragment recipeDetailsFragment;
+    private RecipeStepFragment recipeStepFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +34,17 @@ public class DetailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_detail);
 
         if (savedInstanceState != null) {
-            recipe = savedInstanceState.getParcelable(RECIPE_KEY);
-            twoPaneMode = savedInstanceState.getBoolean(TWO_PANE_KEY);
+            recipe = savedInstanceState.getParcelable(ARG_RECIPE);
+            twoPaneMode = savedInstanceState.getBoolean(ARG_TWO_PANE);
+            recipeDetailsFragment = (RecipeDetailsFragment) getSupportFragmentManager()
+                    .getFragment(savedInstanceState, ARG_RECIPE_DETAILS_FRAGMENT);
+            recipeStepFragment = (RecipeStepFragment) getSupportFragmentManager()
+                    .getFragment(savedInstanceState, ARG_RECIPE_STEP_FRAGMENT);
         } else {
             if (getIntent() == null) closeOnError();
             Bundle data = getIntent().getExtras();
             if (data != null) {
-                recipe = data.getParcelable(EXTRA_RECIPE);
+                recipe = data.getParcelable(ARG_RECIPE);
             } else {
                 closeOnError();
                 return;
@@ -114,8 +122,10 @@ public class DetailActivity extends AppCompatActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(RECIPE_KEY, recipe);
-        outState.putBoolean(TWO_PANE_KEY, twoPaneMode);
+        outState.putParcelable(ARG_RECIPE, recipe);
+        outState.putBoolean(ARG_TWO_PANE, twoPaneMode);
+        getSupportFragmentManager().putFragment(outState, ARG_RECIPE_DETAILS_FRAGMENT, recipeDetailsFragment);
+        getSupportFragmentManager().putFragment(outState, ARG_RECIPE_STEP_FRAGMENT, recipeStepFragment);
         super.onSaveInstanceState(outState);
     }
 }
