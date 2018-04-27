@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
-            recipeFragment = (RecipeFragment) getSupportFragmentManager().getFragment(
-                    savedInstanceState, ARG_RECIPE_FRAGMENT);
+            recipeFragment = (RecipeFragment) getSupportFragmentManager()
+                    .getFragment(savedInstanceState, ARG_RECIPE_FRAGMENT);
         }
 
         setContentView(R.layout.activity_main);
@@ -75,9 +75,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void startFragment(List<Recipe> recipes, int columnCount) {
-        RecipeFragment recipeFragment = RecipeFragment.newInstance(columnCount, recipes);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
+        recipeFragment = RecipeFragment.newInstance(columnCount, recipes);
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment, recipeFragment)
                 .commit();
     }
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onRecipeItemInteraction(Recipe recipe) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_RECIPE, recipe);
+        intent.putExtra(DetailActivity.ARG_RECIPE, recipe);
         startActivity(intent);
     }
 
