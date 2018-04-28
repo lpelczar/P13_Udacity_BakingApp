@@ -78,8 +78,10 @@ public class RecipeStepFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_step, container, false);
 
-        TextView descriptionTextView = view.findViewById(R.id.step_description_tv);
-        descriptionTextView.setText(recipeStep.getDescription());
+        if (view.findViewById(R.id.step_description_tv) != null) {
+            TextView descriptionTextView = view.findViewById(R.id.step_description_tv);
+            descriptionTextView.setText(recipeStep.getDescription());
+        }
 
         playerView = view.findViewById(R.id.playerView);
         if (isCorrectUrl(recipeStep.getVideoURL())) {
@@ -89,9 +91,11 @@ public class RecipeStepFragment extends Fragment {
             initializeMediaSession();
             initializePlayer(Uri.parse(recipeStep.getThumbnailURL()));
         } else {
-            playerView.setVisibility(View.GONE);
+            playerView.setVisibility(View.INVISIBLE);
             ImageView video = view.findViewById(R.id.no_video_iv);
             video.setImageDrawable(getResources().getDrawable(R.drawable.novideo));
+            TextView videoNotAvailable = view.findViewById(R.id.no_video_tv);
+            videoNotAvailable.setVisibility(View.VISIBLE);
         }
 
         return view;

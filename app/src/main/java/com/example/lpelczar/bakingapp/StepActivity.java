@@ -1,7 +1,11 @@
 package com.example.lpelczar.bakingapp;
 
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.lpelczar.bakingapp.fragments.RecipeStepFragment;
@@ -21,6 +25,11 @@ public class StepActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        }
+
         setContentView(R.layout.activity_step);
 
         if (savedInstanceState != null) {
