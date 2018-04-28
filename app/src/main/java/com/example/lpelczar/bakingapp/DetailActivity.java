@@ -52,6 +52,7 @@ public class DetailActivity extends AppCompatActivity implements
             }
         }
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         assert recipe != null;
         setTitle(recipe.getName());
         startRecipeDetailsFragment();
@@ -124,5 +125,11 @@ public class DetailActivity extends AppCompatActivity implements
                     .putFragment(outState, ARG_RECIPE_STEP_FRAGMENT, recipeStepFragment);
         }
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

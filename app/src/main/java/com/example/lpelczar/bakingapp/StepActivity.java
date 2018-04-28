@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.example.lpelczar.bakingapp.fragments.RecipeStepFragment;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
 
+import java.util.Objects;
+
 public class StepActivity extends AppCompatActivity {
 
     public static final String ARG_RECIPE_STEP_FRAGMENT = "recipe-step-fragment";
@@ -28,18 +30,20 @@ public class StepActivity extends AppCompatActivity {
             recipeName = savedInstanceState.getString(ARG_RECIPE_NAME);
         } else {
 
-        if (getIntent() == null) closeOnError();
-        Bundle data = getIntent().getExtras();
-        if (data != null) {
-            recipeStep = data.getParcelable(ARG_RECIPE_STEP);
-            recipeName = data.getString(ARG_RECIPE_NAME);
-        } else {
-            closeOnError();
-            return;
+            if (getIntent() == null) closeOnError();
+            Bundle data = getIntent().getExtras();
+            if (data != null) {
+                recipeStep = data.getParcelable(ARG_RECIPE_STEP);
+                recipeName = data.getString(ARG_RECIPE_NAME);
+            } else {
+                closeOnError();
+                return;
+            }
         }
-    }
-    setTitle(recipeName);
-    startRecipeStepFragment();
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        setTitle(recipeName);
+        startRecipeStepFragment();
     }
 
     private void startRecipeStepFragment() {
@@ -62,5 +66,11 @@ public class StepActivity extends AppCompatActivity {
         outState.putString(ARG_RECIPE_NAME, recipeName);
         getSupportFragmentManager().putFragment(outState, ARG_RECIPE_STEP_FRAGMENT, recipeStepFragment);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }
