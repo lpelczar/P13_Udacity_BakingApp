@@ -1,5 +1,6 @@
 package com.example.lpelczar.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -79,15 +80,9 @@ public class DetailActivity extends AppCompatActivity implements
                     .replace(R.id.recipe_step_fragment, recipeStepFragment)
                     .commit();
         } else {
-            if (recipeStepFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, recipeStepFragment)
-                        .commit();
-            } else {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, recipeDetailsFragment)
-                        .commit();
-            }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, recipeDetailsFragment)
+                    .commit();
         }
     }
 
@@ -102,9 +97,10 @@ public class DetailActivity extends AppCompatActivity implements
                         .replace(R.id.recipe_step_fragment, recipeStepFragment)
                         .commit();
             } else {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, recipeStepFragment)
-                        .commit();
+                Intent intent = new Intent(this, StepActivity.class);
+                intent.putExtra(StepActivity.ARG_RECIPE_NAME, recipe.getName());
+                intent.putExtra(StepActivity.ARG_RECIPE_STEP, item);
+                startActivity(intent);
             }
         }
 

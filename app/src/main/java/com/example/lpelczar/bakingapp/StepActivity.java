@@ -1,0 +1,66 @@
+package com.example.lpelczar.bakingapp;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
+import com.example.lpelczar.bakingapp.fragments.RecipeStepFragment;
+import com.example.lpelczar.bakingapp.models.RecipeStep;
+
+public class StepActivity extends AppCompatActivity {
+
+    public static final String ARG_RECIPE_STEP_FRAGMENT = "recipe-step-fragment";
+    public static final String ARG_RECIPE_STEP = "recipe-step";
+    public static final String ARG_RECIPE_NAME = "recipe-name";
+    private RecipeStepFragment recipeStepFragment;
+    private RecipeStep recipeStep;
+    private String recipeName;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_step);
+
+        if (savedInstanceState != null) {
+            recipeStep = savedInstanceState.getParcelable(ARG_RECIPE_STEP);
+            recipeStepFragment = (RecipeStepFragment) getSupportFragmentManager()
+                    .getFragment(savedInstanceState, ARG_RECIPE_STEP_FRAGMENT);
+            recipeName = savedInstanceState.getString(ARG_RECIPE_NAME);
+        } else {
+
+        if (getIntent() == null) closeOnError();
+        Bundle data = getIntent().getExtras();
+        if (data != null) {
+            recipeStep = data.getParcelable(ARG_RECIPE_STEP);
+            recipeName = data.getString(ARG_RECIPE_NAME);
+        } else {
+            closeOnError();
+            return;
+        }
+    }
+    setTitle(recipeName);
+    startRecipeStepFragment();
+    }
+
+    private void startRecipeStepFragment() {
+        if (recipeStepFragment == null) {
+            recipeStepFragment = RecipeStepFragment.newInstance(recipeStep, false);
+        }
+        getSupportFragmentManager().beginTransaction()
+        .replace(R.id.fragment, recipeStepFragment)
+        .commit();
+    }
+
+    private void closeOnError() {
+        finish();
+        Toast.makeText(this, "Step not available", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(ARG_RECIPE_STEP, recipeStep);
+        outState.putString(ARG_RECIPE_NAME, recipeName);
+        getSupportFragmentManager().putFragment(outState, ARG_RECIPE_STEP_FRAGMENT, recipeStepFragment);
+        super.onSaveInstanceState(outState);
+    }
+}
