@@ -1,6 +1,7 @@
 package com.example.lpelczar.bakingapp.models;
 
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,6 +12,15 @@ public class RecipeStep implements RecipeDetail, Parcelable {
     private String description;
     private String videoURL;
     private String thumbnailURL;
+    private Bitmap videoFrame;
+
+    public void setVideoFrame(Bitmap videoFrame) {
+        this.videoFrame = videoFrame;
+    }
+
+    public Bitmap getVideoFrame() {
+        return videoFrame;
+    }
 
     public int getId() {
         return id;

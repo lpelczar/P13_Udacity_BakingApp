@@ -38,7 +38,6 @@ public class StepActivity extends AppCompatActivity {
                     .getFragment(savedInstanceState, ARG_RECIPE_STEP_FRAGMENT);
             recipeName = savedInstanceState.getString(ARG_RECIPE_NAME);
         } else {
-
             if (getIntent() == null) closeOnError();
             Bundle data = getIntent().getExtras();
             if (data != null) {

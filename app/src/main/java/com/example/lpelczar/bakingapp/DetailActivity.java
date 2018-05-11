@@ -1,6 +1,8 @@
 package com.example.lpelczar.bakingapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import com.example.lpelczar.bakingapp.models.RecipeDetail;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +52,18 @@ public class DetailActivity extends AppCompatActivity implements
             } else {
                 closeOnError();
                 return;
+            }
+        }
+
+        if (recipe != null) {
+            for (RecipeStep recipeStep : recipe.getSteps()) {
+                if (recipeStep.getVideoURL() != null && !recipeStep.getVideoURL().isEmpty()) {
+                    MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+                    mediaMetadataRetriever.setDataSource(recipeStep.getVideoURL(),
+                            new HashMap<String, String>());
+                    Bitmap frame = mediaMetadataRetriever.getFrameAtTime(1000);
+                    recipeStep.setVideoFrame(frame);
+                }
             }
         }
 

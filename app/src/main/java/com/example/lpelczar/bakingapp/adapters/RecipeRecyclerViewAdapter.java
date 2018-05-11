@@ -46,8 +46,10 @@ public class RecipeRecyclerViewAdapter extends
         holder.servings.setText(String.format(Locale.getDefault(), "Servings: %s",
                 recipe.getServings()));
 
-        Drawable drawable = new BitmapDrawable(Resources.getSystem(), recipe.getVideoFrame());
-        holder.relativeLayout.setBackground(drawable);
+        if (recipe.getVideoFrame() != null) {
+            Drawable drawable = new BitmapDrawable(Resources.getSystem(), recipe.getVideoFrame());
+            holder.relativeLayout.setBackground(drawable);
+        }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

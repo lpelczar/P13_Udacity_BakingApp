@@ -1,10 +1,15 @@
 package com.example.lpelczar.bakingapp.adapters;
 
+import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.lpelczar.bakingapp.R;
@@ -86,9 +91,13 @@ public class HeterogeneousRecyclerViewAdapter extends
     private void configureRecipeStepViewHolder(RecipeStepViewHolder recipeStepViewHolder, int position) {
 
         final RecipeStep recipeStep = (RecipeStep) recipeDetails.get(position);
-        recipeStepViewHolder.stepId.setText(String.format(Locale.getDefault(),"Step %d",
-                recipeStep.getId()));
         recipeStepViewHolder.stepShortDescription.setText(recipeStep.getShortDescription());
+
+        if (recipeStep.getVideoFrame() != null) {
+            Drawable drawable = new BitmapDrawable(Resources.getSystem(), recipeStep.getVideoFrame());
+            recipeStepViewHolder.relativeLayout.setBackground(drawable);
+            recipeStepViewHolder.spoonImage.setVisibility(View.INVISIBLE);
+        }
 
         recipeStepViewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,14 +141,16 @@ public class HeterogeneousRecyclerViewAdapter extends
 
     public class RecipeStepViewHolder extends RecyclerView.ViewHolder {
         public final View view;
-        final TextView stepId;
         final TextView stepShortDescription;
+        final RelativeLayout relativeLayout;
+        final ImageView spoonImage;
 
         RecipeStepViewHolder(View view) {
             super(view);
             this.view = view;
-            stepId = view.findViewById(R.id.step_id_tv);
             stepShortDescription = view.findViewById(R.id.step_short_description_tv);
+            relativeLayout = view.findViewById(R.id.step_rl);
+            spoonImage = view.findViewById(R.id.spoon_iv);
         }
     }
 }

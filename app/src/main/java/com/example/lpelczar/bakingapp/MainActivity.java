@@ -61,11 +61,14 @@ public class MainActivity extends AppCompatActivity implements
             public void success(List<Recipe> recipeResult, Response response) {
 
                 for (Recipe recipe : recipeResult) {
-                    MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-                    mediaMetadataRetriever.setDataSource(recipe.getSteps().get(recipe.getSteps().size() - 1).getVideoURL(),
-                            new HashMap<String, String>());
-                    Bitmap frame = mediaMetadataRetriever.getFrameAtTime(1000);
-                    recipe.setVideoFrame(frame);
+                    RecipeStep lastStep = recipe.getSteps().get(recipe.getSteps().size() - 1);
+                    if (lastStep.getVideoURL() != null) {
+                        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+                        mediaMetadataRetriever.setDataSource(lastStep.getVideoURL(),
+                                new HashMap<String, String>());
+                        Bitmap frame = mediaMetadataRetriever.getFrameAtTime(1000);
+                        recipe.setVideoFrame(frame);
+                    }
                 }
 
                 startRecipesFragment(recipeResult);
