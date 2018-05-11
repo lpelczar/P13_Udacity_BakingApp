@@ -3,12 +3,15 @@ package com.example.lpelczar.bakingapp;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Movie;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.lpelczar.bakingapp.fragments.RecipeDetailsFragment;
@@ -19,6 +22,7 @@ import com.example.lpelczar.bakingapp.models.RecipeStep;
 import com.example.lpelczar.bakingapp.services.RecipeAPIService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit.Callback;
@@ -55,6 +59,15 @@ public class MainActivity extends AppCompatActivity implements
         service.getRecipes(new Callback<List<Recipe>>() {
             @Override
             public void success(List<Recipe> recipeResult, Response response) {
+
+                for (Recipe recipe : recipeResult) {
+                    MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+                    mediaMetadataRetriever.setDataSource(recipe.getSteps().get(recipe.getSteps().size() - 1).getVideoURL(),
+                            new HashMap<String, String>());
+                    Bitmap frame = mediaMetadataRetriever.getFrameAtTime(1000);
+                    recipe.setVideoFrame(frame);
+                }
+
                 startRecipesFragment(recipeResult);
             }
             @Override
