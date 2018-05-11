@@ -68,7 +68,7 @@ public class HeterogeneousRecyclerViewAdapter extends
     private void configureIngredientViewHolder(IngredientViewHolder ingredientViewHolder, int position) {
 
         final Ingredient ingredient = (Ingredient) recipeDetails.get(position);
-        ingredientViewHolder.ingredientName.setText(String.format("- %s", ingredient.getName()));
+        ingredientViewHolder.ingredientName.setText(String.format("%s", ingredient.getName()));
         ingredientViewHolder.ingredientMeasure.setText(String.format("%s", ingredient.getMeasure()));
         ingredientViewHolder.ingredientQuantity.setText(String.format(Locale.getDefault() ,"%.1f",
                 ingredient.getQuantity()));
