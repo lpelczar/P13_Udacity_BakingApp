@@ -74,9 +74,8 @@ public class HeterogeneousRecyclerViewAdapter extends
 
         final Ingredient ingredient = (Ingredient) recipeDetails.get(position);
         ingredientViewHolder.ingredientName.setText(String.format("%s", ingredient.getName()));
-        ingredientViewHolder.ingredientMeasure.setText(String.format("%s", ingredient.getMeasure()));
-        ingredientViewHolder.ingredientQuantity.setText(String.format(Locale.getDefault() ,"%.1f",
-                ingredient.getQuantity()));
+        ingredientViewHolder.ingredientQuantity.setText(String.format(Locale.getDefault(),
+                "%.1f %s", ingredient.getQuantity(), ingredient.getMeasure()));
 
         ingredientViewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,14 +127,12 @@ public class HeterogeneousRecyclerViewAdapter extends
         public final View view;
         final TextView ingredientName;
         final TextView ingredientQuantity;
-        final TextView ingredientMeasure;
 
         IngredientViewHolder(View view) {
             super(view);
             this.view = view;
             ingredientName = view.findViewById(R.id.ingredient_name_tv);
             ingredientQuantity = view.findViewById(R.id.ingredient_quantity_tv);
-            ingredientMeasure = view.findViewById(R.id.ingredient_measure_tv);
         }
     }
 
