@@ -80,4 +80,8 @@ public class RecipeRecyclerViewAdapter extends
             relativeLayout = view.findViewById(R.id.recipe_rl);
         }
     }
+
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
 }

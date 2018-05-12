@@ -13,6 +13,7 @@
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:elevation="3dp"
+        android:backgroundTint="#00B8D4"
         card_view:cardCornerRadius="5dp">
 
         <RelativeLayout

@@ -1,4 +1,4 @@
-package com.example.lpelczar.bakingapp;
+package com.example.lpelczar.bakingapp.utils;
 
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;

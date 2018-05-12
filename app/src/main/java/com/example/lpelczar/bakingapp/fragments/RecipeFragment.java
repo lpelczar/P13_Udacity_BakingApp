@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.lpelczar.bakingapp.R;
 import com.example.lpelczar.bakingapp.adapters.RecipeRecyclerViewAdapter;
 import com.example.lpelczar.bakingapp.models.Recipe;
+import com.example.lpelczar.bakingapp.utils.RecipesVideoFrameAsync;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,9 +71,16 @@ public class RecipeFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
             }
-            recyclerView.setAdapter(new RecipeRecyclerViewAdapter(recipes, listener));
+            RecipeRecyclerViewAdapter recipeRecyclerViewAdapter = new RecipeRecyclerViewAdapter(recipes, listener);
+            recyclerView.setAdapter(recipeRecyclerViewAdapter);
+            startVideoFramesAsyncTask(recipeRecyclerViewAdapter);
         }
         return view;
+    }
+
+    private void startVideoFramesAsyncTask(RecipeRecyclerViewAdapter recipeRecyclerViewAdapter) {
+        RecipesVideoFrameAsync recipesVideoFrameAsync = new RecipesVideoFrameAsync();
+        recipesVideoFrameAsync.execute(recipeRecyclerViewAdapter);
     }
 
     @Override

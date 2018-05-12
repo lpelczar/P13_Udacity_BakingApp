@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lpelczar.bakingapp.R;
-import com.example.lpelczar.bakingapp.StepsVideoFrameAsync;
+import com.example.lpelczar.bakingapp.utils.StepsVideoFrameAsync;
 import com.example.lpelczar.bakingapp.adapters.HeterogeneousRecyclerViewAdapter;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
 
