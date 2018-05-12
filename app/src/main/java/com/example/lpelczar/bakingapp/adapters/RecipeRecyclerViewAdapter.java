@@ -49,6 +49,7 @@ public class RecipeRecyclerViewAdapter extends
         if (recipe.getVideoFrame() != null) {
             Drawable drawable = new BitmapDrawable(Resources.getSystem(), recipe.getVideoFrame());
             holder.relativeLayout.setBackground(drawable);
+            holder.spoonImage.setVisibility(View.INVISIBLE);
         }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +72,7 @@ public class RecipeRecyclerViewAdapter extends
         final TextView name;
         final TextView servings;
         final RelativeLayout relativeLayout;
+        final ImageView spoonImage;
 
         ViewHolder(View view) {
             super(view);
@@ -78,6 +80,7 @@ public class RecipeRecyclerViewAdapter extends
             name = view.findViewById(R.id.recipe_name_tv);
             servings = view.findViewById(R.id.recipe_servings_tv);
             relativeLayout = view.findViewById(R.id.recipe_rl);
+            spoonImage = view.findViewById(R.id.spoon_iv);
         }
     }
 
