@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -78,7 +79,8 @@ public class DetailActivity extends AppCompatActivity implements
                     .commit();
 
             if (recipeStepFragment == null) {
-                recipeStepFragment = RecipeStepFragment.newInstance(recipe.getSteps().get(0), false);
+                recipeStepFragment = RecipeStepFragment.newInstance(recipe.getSteps().get(0),
+                        recipe.getSteps(), false);
             }
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.recipe_step_fragment, recipeStepFragment)
@@ -94,7 +96,8 @@ public class DetailActivity extends AppCompatActivity implements
     public void onRecipeDetailItemInteraction(RecipeDetail item) {
 
         if (item instanceof RecipeStep) {
-            recipeStepFragment = RecipeStepFragment.newInstance((RecipeStep) item, false);
+            recipeStepFragment = RecipeStepFragment.newInstance((RecipeStep) item,
+                    recipe.getSteps(), false);
 
             if (twoPaneMode) {
                 getSupportFragmentManager().beginTransaction()
@@ -104,6 +107,7 @@ public class DetailActivity extends AppCompatActivity implements
                 Intent intent = new Intent(this, StepActivity.class);
                 intent.putExtra(StepActivity.ARG_RECIPE_NAME, recipe.getName());
                 intent.putExtra(StepActivity.ARG_RECIPE_STEP, item);
+                intent.putParcelableArrayListExtra(StepActivity.ARG_RECIPE_STEPS, new ArrayList<>(recipe.getSteps()));
                 startActivity(intent);
             }
         }

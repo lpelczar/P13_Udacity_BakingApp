@@ -1,7 +1,9 @@
 package com.example.lpelczar.bakingapp.fragments;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -10,10 +12,13 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lpelczar.bakingapp.R;
+import com.example.lpelczar.bakingapp.StepActivity;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -33,6 +38,8 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -40,9 +47,11 @@ public class RecipeStepFragment extends Fragment {
 
     private static final String ARG_IS_LANDSCAPE = "is-landscape";
     private static final String ARG_RECIPE_STEP = "recipe-step";
+    private static final String ARG_RECIPE_STEPS = "recipe-steps";
 
     private boolean isLandscape = false;
     private RecipeStep recipeStep;
+    private List<RecipeStep> recipeSteps;
     private SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView playerView;
     private static MediaSessionCompat mediaSession;
@@ -51,11 +60,12 @@ public class RecipeStepFragment extends Fragment {
     }
 
     @SuppressWarnings("unused")
-    public static RecipeStepFragment newInstance(RecipeStep recipeStep,
+    public static RecipeStepFragment newInstance(RecipeStep recipeStep, List<RecipeStep> recipeSteps,
                                                  boolean isLandscape) {
         RecipeStepFragment fragment = new RecipeStepFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_IS_LANDSCAPE, isLandscape);
+        args.putParcelableArrayList(ARG_RECIPE_STEPS, new ArrayList<>(recipeSteps));
         args.putParcelable(ARG_RECIPE_STEP, recipeStep);
         fragment.setArguments(args);
         return fragment;
@@ -68,11 +78,13 @@ public class RecipeStepFragment extends Fragment {
         if (savedInstanceState != null) {
             isLandscape = savedInstanceState.getBoolean(ARG_IS_LANDSCAPE);
             recipeStep = savedInstanceState.getParcelable(ARG_RECIPE_STEP);
+            recipeSteps = savedInstanceState.getParcelableArrayList(ARG_RECIPE_STEPS);
         }
 
         if (getArguments() != null) {
             isLandscape = getArguments().getBoolean(ARG_IS_LANDSCAPE);
             recipeStep = getArguments().getParcelable(ARG_RECIPE_STEP);
+            recipeSteps = getArguments().getParcelableArrayList(ARG_RECIPE_STEPS);
         }
     }
 
@@ -100,8 +112,64 @@ public class RecipeStepFragment extends Fragment {
             TextView videoNotAvailable = view.findViewById(R.id.no_video_tv);
             videoNotAvailable.setVisibility(View.VISIBLE);
         }
-
+        handlePreviousAndNextStepButtons(view);
         return view;
+    }
+
+    private void handlePreviousAndNextStepButtons(View view) {
+
+        if (view.findViewById(R.id.previous_step_button) != null) {
+            Button previous = view.findViewById(R.id.previous_step_button);
+            previous.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int currentStepId = recipeStep.getId();
+                    if (getStepById(currentStepId - 1) != null) {
+                        replaceStepFragment(getStepById(currentStepId - 1));
+                    } else if (getStepById(currentStepId - 2) != null) {
+                        replaceStepFragment(getStepById(currentStepId - 2));
+                    } else {
+                        Toast.makeText(getContext(), "This is the first step!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+        if (view.findViewById(R.id.next_step_button) != null) {
+            Button next = view.findViewById(R.id.next_step_button);
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int currentStepId = recipeStep.getId();
+                    if (getStepById(currentStepId + 1) != null) {
+                        replaceStepFragment(getStepById(currentStepId + 1));
+                    } else if (getStepById(currentStepId + 2) != null) {
+                        replaceStepFragment(getStepById(currentStepId + 2));
+                    } else {
+                        Toast.makeText(getContext(), "This is the last step!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+
+    private void replaceStepFragment(RecipeStep nextStep) {
+        RecipeStepFragment fragment = RecipeStepFragment.newInstance(nextStep,
+                recipeSteps, false);
+        if (getActivity() != null) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, fragment)
+                    .commit();
+        }
+    }
+
+    private RecipeStep getStepById(int id) {
+        for (RecipeStep recipeStep : recipeSteps) {
+            if (recipeStep.getId() == id) {
+                return recipeStep;
+            }
+        }
+        return null;
     }
 
     private boolean isCorrectUrl(String url) {
@@ -190,6 +258,7 @@ public class RecipeStepFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(ARG_IS_LANDSCAPE, isLandscape);
         outState.putParcelable(ARG_RECIPE_STEP, recipeStep);
+        outState.putParcelableArrayList(ARG_RECIPE_STEPS, new ArrayList<>(recipeSteps));
         super.onSaveInstanceState(outState);
     }
 }
