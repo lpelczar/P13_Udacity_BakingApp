@@ -153,4 +153,8 @@ public class HeterogeneousRecyclerViewAdapter extends
             spoonImage = view.findViewById(R.id.spoon_iv);
         }
     }
+
+    public List<RecipeDetail> getRecipeDetails() {
+        return recipeDetails;
+    }
 }

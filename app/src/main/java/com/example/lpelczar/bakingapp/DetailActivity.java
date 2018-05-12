@@ -55,18 +55,6 @@ public class DetailActivity extends AppCompatActivity implements
             }
         }
 
-        if (recipe != null) {
-            for (RecipeStep recipeStep : recipe.getSteps()) {
-                if (recipeStep.getVideoURL() != null && !recipeStep.getVideoURL().isEmpty()) {
-                    MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-                    mediaMetadataRetriever.setDataSource(recipeStep.getVideoURL(),
-                            new HashMap<String, String>());
-                    Bitmap frame = mediaMetadataRetriever.getFrameAtTime(1000);
-                    recipeStep.setVideoFrame(frame);
-                }
-            }
-        }
-
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         assert recipe != null;
         setTitle(recipe.getName());

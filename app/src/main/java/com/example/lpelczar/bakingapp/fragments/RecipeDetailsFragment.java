@@ -2,7 +2,6 @@ package com.example.lpelczar.bakingapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lpelczar.bakingapp.R;
+import com.example.lpelczar.bakingapp.StepsVideoFrameAsync;
 import com.example.lpelczar.bakingapp.adapters.HeterogeneousRecyclerViewAdapter;
 import com.example.lpelczar.bakingapp.models.RecipeDetail;
 
@@ -60,9 +60,16 @@ public class RecipeDetailsFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new HeterogeneousRecyclerViewAdapter(recipeDetails, listener));
+            HeterogeneousRecyclerViewAdapter adapter = new HeterogeneousRecyclerViewAdapter(recipeDetails, listener);
+            recyclerView.setAdapter(adapter);
+            startVideoFramesAsyncTask(adapter);
         }
         return view;
+    }
+
+    private void startVideoFramesAsyncTask(HeterogeneousRecyclerViewAdapter adapter) {
+        StepsVideoFrameAsync stepsVideoFrameAsync = new StepsVideoFrameAsync();
+        stepsVideoFrameAsync.execute(adapter);
     }
 
 
