@@ -1,11 +1,13 @@
 package com.example.lpelczar.bakingapp.adapters;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import com.example.lpelczar.bakingapp.R;
 import com.example.lpelczar.bakingapp.fragments.RecipeFragment.OnRecipeFragmentInteractionListener;
 import com.example.lpelczar.bakingapp.models.Recipe;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 import java.util.Locale;
@@ -47,7 +51,9 @@ public class RecipeRecyclerViewAdapter extends
         holder.servings.setText(String.format(Locale.getDefault(), "Servings: %s",
                 recipe.getServings()));
 
-        if (recipe.getVideoFrame() != null) {
+        if (recipe.getImage() != null && !recipe.getImage().isEmpty()) {
+            loadImage(holder);
+        } else if (recipe.getVideoFrame() != null) {
             Drawable drawable = new BitmapDrawable(Resources.getSystem(), recipe.getVideoFrame());
             holder.relativeLayout.setBackground(drawable);
             holder.spoonImage.setVisibility(View.INVISIBLE);
@@ -60,6 +66,20 @@ public class RecipeRecyclerViewAdapter extends
                     listener.onRecipeItemInteraction(recipe);
                 }
             }
+        });
+    }
+
+    private void loadImage(@NonNull final ViewHolder holder) {
+        Picasso.with(holder.relativeLayout.getContext()).load("http://imageUrl").into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                holder.relativeLayout.setBackground(new BitmapDrawable(Resources.getSystem(), bitmap));
+            }
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {}
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {}
         });
     }
 
