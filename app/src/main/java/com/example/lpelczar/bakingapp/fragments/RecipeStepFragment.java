@@ -1,6 +1,10 @@
 package com.example.lpelczar.bakingapp.fragments;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -32,6 +36,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -102,18 +108,33 @@ public class RecipeStepFragment extends Fragment {
         if (isCorrectUrl(recipeStep.getVideoURL())) {
             initializeMediaSession();
             initializePlayer(Uri.parse(recipeStep.getVideoURL()));
-        } else if (isCorrectUrl(recipeStep.getThumbnailURL())) {
-            initializeMediaSession();
-            initializePlayer(Uri.parse(recipeStep.getThumbnailURL()));
         } else {
             playerView.setVisibility(View.INVISIBLE);
             ImageView video = view.findViewById(R.id.no_video_iv);
-            video.setImageDrawable(getResources().getDrawable(R.drawable.novideo));
-            TextView videoNotAvailable = view.findViewById(R.id.no_video_tv);
-            videoNotAvailable.setVisibility(View.VISIBLE);
+            if (recipeStep.getThumbnailURL() != null && !recipeStep.getThumbnailURL().isEmpty()) {
+                loadImage(video, recipeStep.getThumbnailURL());
+            } else {
+                video.setImageDrawable(getResources().getDrawable(R.drawable.novideo));
+                TextView videoNotAvailable = view.findViewById(R.id.no_video_tv);
+                videoNotAvailable.setVisibility(View.VISIBLE);
+            }
         }
         handlePreviousAndNextStepButtons(view);
         return view;
+    }
+
+    private void loadImage(final ImageView videoImage, String path) {
+        Picasso.with(videoImage.getContext()).load(path).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                videoImage.setImageDrawable(new BitmapDrawable(Resources.getSystem(), bitmap));
+            }
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {}
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {}
+        });
     }
 
     private void handlePreviousAndNextStepButtons(View view) {

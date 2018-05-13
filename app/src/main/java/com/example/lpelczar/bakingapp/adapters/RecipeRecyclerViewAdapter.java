@@ -52,7 +52,7 @@ public class RecipeRecyclerViewAdapter extends
                 recipe.getServings()));
 
         if (recipe.getImage() != null && !recipe.getImage().isEmpty()) {
-            loadImage(holder);
+            loadImage(holder, recipe.getImage());
         } else if (recipe.getVideoFrame() != null) {
             Drawable drawable = new BitmapDrawable(Resources.getSystem(), recipe.getVideoFrame());
             holder.relativeLayout.setBackground(drawable);
@@ -69,8 +69,8 @@ public class RecipeRecyclerViewAdapter extends
         });
     }
 
-    private void loadImage(@NonNull final ViewHolder holder) {
-        Picasso.with(holder.relativeLayout.getContext()).load("http://imageUrl").into(new Target() {
+    private void loadImage(@NonNull final ViewHolder holder, String path) {
+        Picasso.with(holder.relativeLayout.getContext()).load(path).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 holder.relativeLayout.setBackground(new BitmapDrawable(Resources.getSystem(), bitmap));
