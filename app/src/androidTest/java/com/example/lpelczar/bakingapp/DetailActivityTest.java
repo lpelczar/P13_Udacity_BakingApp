@@ -15,6 +15,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @RunWith(AndroidJUnit4.class)
 public class DetailActivityTest {
@@ -23,14 +24,16 @@ public class DetailActivityTest {
     public IntentsTestRule<MainActivity> activityTestRule = new IntentsTestRule<>(MainActivity.class);
 
     @Test
-    public void whenRecyclerViewItemClickedThenOpenStepActivity() {
+    public void whenRecyclerViewItemClickedThenOpenStepActivity() throws InterruptedException {
+        Thread.sleep(SECONDS.toMillis(2));
         onView(withId(R.id.recipe_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.recipe_details_list)).perform(RecyclerViewActions.actionOnItemAtPosition(10, click()));
         intended(hasComponent(StepActivity.class.getName()));
     }
 
     @Test
-    public void whenStepClickedThenAppropriateStepIsOpened() {
+    public void whenStepClickedThenAppropriateStepIsOpened() throws InterruptedException {
+        Thread.sleep(SECONDS.toMillis(2));
         onView(withId(R.id.recipe_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.recipe_details_list)).perform(RecyclerViewActions.actionOnItemAtPosition(11, click()));
         intended(hasComponent(StepActivity.class.getName()));

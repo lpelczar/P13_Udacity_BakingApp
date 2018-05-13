@@ -3,10 +3,6 @@ package com.example.lpelczar.bakingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.lpelczar.bakingapp.fragments.RecipeFragment;

@@ -13,6 +13,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @RunWith(AndroidJUnit4.class)
 public class StepActivityTest {
@@ -21,7 +22,8 @@ public class StepActivityTest {
     public IntentsTestRule<MainActivity> activityTestRule = new IntentsTestRule<>(MainActivity.class);
 
     @Test
-    public void whenNextButtonClickedThenNextStepIsShown() {
+    public void whenNextButtonClickedThenNextStepIsShown() throws InterruptedException {
+        Thread.sleep(SECONDS.toMillis(2));
         onView(withId(R.id.recipe_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.recipe_details_list)).perform(RecyclerViewActions.actionOnItemAtPosition(11, click()));
         onView(withId(R.id.next_step_button)).perform(click());
@@ -32,7 +34,8 @@ public class StepActivityTest {
     }
 
     @Test
-    public void whenPreviousButtonClickedThenPreviousStepIsShown() {
+    public void whenPreviousButtonClickedThenPreviousStepIsShown() throws InterruptedException {
+        Thread.sleep(SECONDS.toMillis(2));
         onView(withId(R.id.recipe_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.recipe_details_list)).perform(RecyclerViewActions.actionOnItemAtPosition(11, click()));
         onView(withId(R.id.previous_step_button)).perform(click());

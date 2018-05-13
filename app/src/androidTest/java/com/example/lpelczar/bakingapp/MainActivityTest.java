@@ -1,10 +1,14 @@
 package com.example.lpelczar.bakingapp;
 
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +18,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
@@ -22,7 +27,8 @@ public class MainActivityTest {
     public IntentsTestRule<MainActivity> activityTestRule = new IntentsTestRule<>(MainActivity.class);
 
     @Test
-    public void whenRecyclerViewItemClickedThenOpenStepActivity() {
+    public void whenRecyclerViewItemClickedThenOpenStepActivity() throws InterruptedException {
+        Thread.sleep(SECONDS.toMillis(2));
         onView(withId(R.id.recipe_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         intended(hasComponent(DetailActivity.class.getName()));
     }
