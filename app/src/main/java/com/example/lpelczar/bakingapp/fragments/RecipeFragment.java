@@ -25,9 +25,12 @@ public class RecipeFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_RECIPES = "recipes";
+    private static final String ARG_RECYCLER_VIEW_STATE = "recycler-state";
 
     private int columnCount = 1;
     private List<Recipe> recipes;
+    private RecyclerView recyclerView;
+    private Parcelable recyclerViewState;
 
     private OnRecipeFragmentInteractionListener listener;
 
@@ -51,6 +54,7 @@ public class RecipeFragment extends Fragment {
         if (savedInstanceState != null) {
             columnCount = savedInstanceState.getInt(ARG_COLUMN_COUNT);
             recipes = savedInstanceState.getParcelableArrayList(ARG_RECIPES);
+            recyclerViewState = savedInstanceState.getParcelable(ARG_RECYCLER_VIEW_STATE);
         }
 
         if (getArguments() != null) {
@@ -66,7 +70,7 @@ public class RecipeFragment extends Fragment {
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (columnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -101,6 +105,15 @@ public class RecipeFragment extends Fragment {
         listener = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (recyclerViewState != null) {
+            recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+        }
+    }
+
     public interface OnRecipeFragmentInteractionListener {
         void onRecipeItemInteraction(Recipe recipe);
     }
@@ -109,6 +122,8 @@ public class RecipeFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(ARG_COLUMN_COUNT, columnCount);
         outState.putParcelableArrayList(ARG_RECIPES, new ArrayList<>(recipes));
+        recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(ARG_RECYCLER_VIEW_STATE, recyclerViewState);
         super.onSaveInstanceState(outState);
     }
 }

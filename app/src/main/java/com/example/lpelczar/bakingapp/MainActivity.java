@@ -25,13 +25,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         if (savedInstanceState != null) {
             recipeFragment = (RecipeFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, ARG_RECIPE_FRAGMENT);
         }
 
-        setContentView(R.layout.activity_main);
         getRecipesFromApi();
     }
 
@@ -65,10 +65,16 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void startFragment(List<Recipe> recipes, int columnCount) {
-        recipeFragment = RecipeFragment.newInstance(columnCount, recipes);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment, recipeFragment)
-                .commit();
+        if (recipeFragment == null) {
+            recipeFragment = RecipeFragment.newInstance(columnCount, recipes);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment, recipeFragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, recipeFragment)
+                    .commit();
+        }
     }
 
     @Override
