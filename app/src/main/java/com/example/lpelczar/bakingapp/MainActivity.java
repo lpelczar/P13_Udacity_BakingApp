@@ -80,7 +80,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        getSupportFragmentManager().putFragment(outState, ARG_RECIPE_FRAGMENT, recipeFragment);
+        if (recipeFragment != null && recipeFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, ARG_RECIPE_FRAGMENT, recipeFragment);
+        }
         super.onSaveInstanceState(outState);
     }
 }
