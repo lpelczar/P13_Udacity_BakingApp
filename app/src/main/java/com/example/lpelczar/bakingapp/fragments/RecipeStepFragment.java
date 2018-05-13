@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.lpelczar.bakingapp.R;
 import com.example.lpelczar.bakingapp.StepActivity;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -41,6 +42,7 @@ import com.squareup.picasso.Target;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -54,6 +56,7 @@ public class RecipeStepFragment extends Fragment {
     private static final String ARG_IS_LANDSCAPE = "is-landscape";
     private static final String ARG_RECIPE_STEP = "recipe-step";
     private static final String ARG_RECIPE_STEPS = "recipe-steps";
+    private static final String ARG_POSITION = "position";
 
     private boolean isLandscape = false;
     private RecipeStep recipeStep;
@@ -61,6 +64,8 @@ public class RecipeStepFragment extends Fragment {
     private SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView playerView;
     private static MediaSessionCompat mediaSession;
+    private long position;
+    private Uri videoUri;
 
     public RecipeStepFragment() {
     }
@@ -81,10 +86,12 @@ public class RecipeStepFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        position = C.TIME_UNSET;
         if (savedInstanceState != null) {
             isLandscape = savedInstanceState.getBoolean(ARG_IS_LANDSCAPE);
             recipeStep = savedInstanceState.getParcelable(ARG_RECIPE_STEP);
             recipeSteps = savedInstanceState.getParcelableArrayList(ARG_RECIPE_STEPS);
+            position = savedInstanceState.getLong(ARG_POSITION);
         }
 
         if (getArguments() != null) {
@@ -107,7 +114,8 @@ public class RecipeStepFragment extends Fragment {
         playerView = view.findViewById(R.id.playerView);
         if (isCorrectUrl(recipeStep.getVideoURL())) {
             initializeMediaSession();
-            initializePlayer(Uri.parse(recipeStep.getVideoURL()));
+            videoUri = Uri.parse(recipeStep.getVideoURL());
+            initializePlayer(videoUri);
         } else {
             playerView.setVisibility(View.INVISIBLE);
             ImageView video = view.findViewById(R.id.no_video_iv);
@@ -253,8 +261,27 @@ public class RecipeStepFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri,
                     new DefaultDataSourceFactory(Objects.requireNonNull(getActivity()), userAgent),
                     new DefaultExtractorsFactory(), null, null);
+            if (position != C.TIME_UNSET) exoPlayer.seekTo(position);
             exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(true);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (videoUri != null)
+            initializePlayer(videoUri);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (exoPlayer != null) {
+            position = exoPlayer.getCurrentPosition();
+            exoPlayer.stop();
+            exoPlayer.release();
+            exoPlayer = null;
         }
     }
 
@@ -280,6 +307,7 @@ public class RecipeStepFragment extends Fragment {
         outState.putBoolean(ARG_IS_LANDSCAPE, isLandscape);
         outState.putParcelable(ARG_RECIPE_STEP, recipeStep);
         outState.putParcelableArrayList(ARG_RECIPE_STEPS, new ArrayList<>(recipeSteps));
+        outState.putLong(ARG_POSITION, position);
         super.onSaveInstanceState(outState);
     }
 }

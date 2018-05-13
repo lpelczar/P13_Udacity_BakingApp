@@ -66,10 +66,14 @@ public class StepActivity extends AppCompatActivity {
         if (recipeStepFragment == null) {
             recipeStepFragment = RecipeStepFragment.newInstance(recipeStep,
                     recipeSteps, false);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment, recipeStepFragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, recipeStepFragment)
+                    .commit();
         }
-        getSupportFragmentManager().beginTransaction()
-        .replace(R.id.fragment, recipeStepFragment)
-        .commit();
     }
 
     private void closeOnError() {
