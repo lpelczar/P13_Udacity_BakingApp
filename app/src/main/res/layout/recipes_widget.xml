@@ -1,21 +1,45 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09C"
-    android:padding="@dimen/widget_margin">
+    android:background="#009688"
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <TextView
-        android:id="@+id/appwidget_text"
+        android:id="@+id/widget_starter_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:layout_margin="10dp"
+        android:text="@string/please_add_recipe_from_the_app" />
+
+    <ImageView
+        android:id="@+id/widget_starter_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:src="@drawable/baseline_restaurant_menu_white_48dp"
+        android:contentDescription="@string/starting_widget_image" />
+
+    <TextView
+        android:id="@+id/widget_recipe_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/widget_recipe_name"
         android:textColor="#ffffff"
         android:textSize="24sp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        tools:text="Recipe name" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/widget_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"/>
+
+</LinearLayout>

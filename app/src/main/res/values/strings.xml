@@ -12,4 +12,8 @@
     <string name="add_widget">Add widget</string>
     <string name="recipe_image">Recipe Image</string>
     <string name="step_icon">Step icon</string>
+    <string name="widget_recipe_name">Widget recipe name</string>
+    <string name="add_to_widget">Add to widget</string>
+    <string name="starting_widget_image">Starting widget image</string>
+    <string name="please_add_recipe_from_the_app">Please add recipe from the app!</string>
 </resources>
