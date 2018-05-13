@@ -1,18 +1,15 @@
 package com.example.lpelczar.bakingapp.fragments;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lpelczar.bakingapp.R;
-import com.example.lpelczar.bakingapp.StepActivity;
 import com.example.lpelczar.bakingapp.models.RecipeStep;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -40,12 +36,9 @@ import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +50,7 @@ public class RecipeStepFragment extends Fragment {
     private static final String ARG_RECIPE_STEP = "recipe-step";
     private static final String ARG_RECIPE_STEPS = "recipe-steps";
     private static final String ARG_POSITION = "position";
+    private static final String ARG_PLAY_WHEN_READY = "play-when-ready";
 
     private boolean isLandscape = false;
     private RecipeStep recipeStep;
@@ -66,6 +60,7 @@ public class RecipeStepFragment extends Fragment {
     private static MediaSessionCompat mediaSession;
     private long position;
     private Uri videoUri;
+    private boolean playWhenReady = true;
 
     public RecipeStepFragment() {
     }
@@ -92,6 +87,7 @@ public class RecipeStepFragment extends Fragment {
             recipeStep = savedInstanceState.getParcelable(ARG_RECIPE_STEP);
             recipeSteps = savedInstanceState.getParcelableArrayList(ARG_RECIPE_STEPS);
             position = savedInstanceState.getLong(ARG_POSITION);
+            playWhenReady = savedInstanceState.getBoolean(ARG_PLAY_WHEN_READY);
         }
 
         if (getArguments() != null) {
@@ -263,7 +259,7 @@ public class RecipeStepFragment extends Fragment {
                     new DefaultExtractorsFactory(), null, null);
             if (position != C.TIME_UNSET) exoPlayer.seekTo(position);
             exoPlayer.prepare(mediaSource);
-            exoPlayer.setPlayWhenReady(true);
+            exoPlayer.setPlayWhenReady(playWhenReady);
         }
     }
 
@@ -278,6 +274,7 @@ public class RecipeStepFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (exoPlayer != null) {
+            playWhenReady = exoPlayer.getPlayWhenReady();
             position = exoPlayer.getCurrentPosition();
             exoPlayer.stop();
             exoPlayer.release();
@@ -308,6 +305,7 @@ public class RecipeStepFragment extends Fragment {
         outState.putParcelable(ARG_RECIPE_STEP, recipeStep);
         outState.putParcelableArrayList(ARG_RECIPE_STEPS, new ArrayList<>(recipeSteps));
         outState.putLong(ARG_POSITION, position);
+        outState.putBoolean(ARG_PLAY_WHEN_READY, playWhenReady);
         super.onSaveInstanceState(outState);
     }
 }
