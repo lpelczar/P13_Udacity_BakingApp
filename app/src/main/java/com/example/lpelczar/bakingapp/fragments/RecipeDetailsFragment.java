@@ -2,6 +2,7 @@ package com.example.lpelczar.bakingapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +23,10 @@ import java.util.List;
 public class RecipeDetailsFragment extends Fragment {
 
     private static final String ARG_RECIPE_DETAILS = "recipe-details";
+    private static final String ARG_RECYCLER_VIEW_STATE = "recycler-state";
     private List<RecipeDetail> recipeDetails;
+    private RecyclerView recyclerView;
+    private Parcelable recyclerViewState;
 
     private OnRecipeDetailsFragmentInteractionListener listener;
 
@@ -44,6 +48,7 @@ public class RecipeDetailsFragment extends Fragment {
 
         if (savedInstanceState != null) {
             recipeDetails = savedInstanceState.getParcelableArrayList(ARG_RECIPE_DETAILS);
+            recyclerViewState = savedInstanceState.getParcelable(ARG_RECYCLER_VIEW_STATE);
         }
 
         if (getArguments() != null) {
@@ -58,7 +63,7 @@ public class RecipeDetailsFragment extends Fragment {
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             HeterogeneousRecyclerViewAdapter adapter = new HeterogeneousRecyclerViewAdapter(recipeDetails, listener);
             recyclerView.setAdapter(adapter);
@@ -90,6 +95,15 @@ public class RecipeDetailsFragment extends Fragment {
         listener = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (recyclerViewState != null) {
+            recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+        }
+    }
+
     public interface OnRecipeDetailsFragmentInteractionListener {
         void onRecipeDetailItemInteraction(RecipeDetail item);
     }
@@ -97,6 +111,8 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelableArrayList(ARG_RECIPE_DETAILS, new ArrayList<>(recipeDetails));
+        recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(ARG_RECYCLER_VIEW_STATE, recyclerViewState);
         super.onSaveInstanceState(outState);
 
     }

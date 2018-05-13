@@ -71,15 +71,18 @@ public class DetailActivity extends AppCompatActivity implements
         recipeDetails.addAll(recipe.getIngredients());
         recipeDetails.addAll(recipe.getSteps());
 
-        recipeDetailsFragment = RecipeDetailsFragment.newInstance(
-                1, recipeDetails);
+        if (recipeDetailsFragment == null) {
+            recipeDetailsFragment = RecipeDetailsFragment.newInstance(
+                    1, recipeDetails);
+        }
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+
         if (tabletSize) {
             twoPaneMode = true;
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.recipe_details_fragment, recipeDetailsFragment)
+                    .replace(R.id.recipe_details_fragment, recipeDetailsFragment)
                     .commit();
 
             if (recipeStepFragment == null) {
