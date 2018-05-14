@@ -25,6 +25,20 @@ Project 13: Baking app - Android Baking App that will allow Udacity’s resident
 
 ## Screenshots
 
+![b1](http://i67.tinypic.com/dmurz8.png)
+
+![b2](http://i66.tinypic.com/2uffy2u.png)
+
+![b3](http://i64.tinypic.com/1y1hjm.png)
+
+![b4](http://i68.tinypic.com/if3hvk.png)
+
+![b7](http://i66.tinypic.com/noh4lt.png)
+
+![b5](http://i65.tinypic.com/15zjrit.png)
+
+![b6](http://i65.tinypic.com/15zjrit.png)
+
 ## Project Overview
 You will productionize an app, taking it from a functional state to a production-ready state. This will involve finding and handling error cases, adding accessibility features, allowing for localization, adding a widget, and adding a library.
 
