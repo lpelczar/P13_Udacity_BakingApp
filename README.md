@@ -25,6 +25,11 @@ Project 13: Baking app - Android Baking App that will allow Udacity’s resident
 
 ## Screenshots
 
+<img width="40%" vspace="20" hspace="20" src="http://i67.tinypic.com/dmurz8.png" /> 
+<img width="40%" vspace="20" hspace="20" src="http://i66.tinypic.com/2uffy2u.png" /> 
+
+<img width="80%" hspace="20" vspace="20" src="http://i66.tinypic.com/5l5rb7.png" />
+
 ![b1](http://i67.tinypic.com/dmurz8.png)
 
 ![b2](http://i66.tinypic.com/2uffy2u.png)
