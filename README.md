@@ -29,7 +29,7 @@ Project 13: Baking app - Android Baking App that will allow Udacity’s resident
 
 <img src="https://raw.github.com/lpelczar/P13_Udacity_BakingApp/master/screenshots/p13-2.png" width="600">
 
-<img src="https://raw.github.com/lpelczar/P13_Udacity_BakingApp/master/screenshots/p13-3.png" height="600">
+<img src="https://raw.github.com/lpelczar/P13_Udacity_BakingApp/master/screenshots/p13-3.png" width="1200">
 
 <img src="https://raw.github.com/lpelczar/P13_Udacity_BakingApp/master/screenshots/p13-4.png" width="600">
 
