@@ -25,13 +25,13 @@ Project 13: Baking app - Android Baking App that will allow Udacity’s resident
 
 ## Screenshots
 
-<img width="40%" vspace="20" hspace="20" src="http://i67.tinypic.com/dmurz8.png" /> <img width="40%" vspace="20" hspace="20" src="http://i66.tinypic.com/2uffy2u.png" />
+<img src="https://raw.github.com/lpelczar/P13_Udacity_BakingApp/master/screenshots/p13-1.png" width="600">
 
-<img width="40%" vspace="20" hspace="20" src="http://i64.tinypic.com/1y1hjm.png" /> <img width="40%" vspace="20" hspace="20" src="http://i66.tinypic.com/noh4lt.png" /> 
+<img src="https://raw.github.com/lpelczar/P13_Udacity_BakingApp/master/screenshots/p13-2.png" width="600">
 
-<img width="80%" hspace="20" vspace="20" src="http://i68.tinypic.com/if3hvk.png" /> 
+<img src="https://raw.github.com/lpelczar/P13_Udacity_BakingApp/master/screenshots/p13-3.png" height="600">
 
-<img width="80%" hspace="20" vspace="20" src="http://i66.tinypic.com/5l5rb7.png" />
+<img src="https://raw.github.com/lpelczar/P13_Udacity_BakingApp/master/screenshots/p13-4.png" width="600">
 
 ## Project Overview
 You will productionize an app, taking it from a functional state to a production-ready state. This will involve finding and handling error cases, adding accessibility features, allowing for localization, adding a widget, and adding a library.
